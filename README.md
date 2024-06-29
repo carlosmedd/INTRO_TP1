@@ -44,6 +44,6 @@ El proyecto consta de dos partes principales: backend y frontend.
 #### 2. En una nueva terminal, iniciar el servidor frontend:
 > cd frontend
 > 
-> python -m http.server
+> python3 -m http.server
 
 #### 3. Abrir un navegador y acceder a la aplicación en `http://localhost:8000` (o el puerto que se indique en la terminal).

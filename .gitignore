@@ -1,2 +1,3 @@
 # archivos y/o directorios a ignorar:
-venv/ 
+venv/
+__pycache__/

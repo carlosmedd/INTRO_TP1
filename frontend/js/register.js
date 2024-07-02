@@ -17,8 +17,11 @@ function registerUser(username, nickname, password) {
                 console.log(localStorage);
                 alert("Usuario creado existosamente");
                 window.location.href = 'http://127.0.0.1:8000/html/home.html';
+
             } else {
-                alert("El usuario ya existe.");
+                const alert = document.getElementById('alert');
+                alert.innerHTML = 'El nombre de usuario ya esta en uso.';
+                alert.style.display = 'block';
             }
         })
         .catch(error => console.error('El servidor fallo:', error));
@@ -26,6 +29,9 @@ function registerUser(username, nickname, password) {
 
 document.addEventListener('DOMContentLoaded' , function() {
     console.log(localStorage);
+
+    const alert = document.getElementById('alert');
+    alert.style.display = 'none';
 
     document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -35,22 +41,40 @@ document.addEventListener('DOMContentLoaded' , function() {
         const password = document.getElementById('password').value;
         const confirm_password = document.getElementById('confirm_password').value;
 
-        if (username == '') {
-            alert('Debes tener un nombre de usuario.');
-
-        } else if (nickname == '') {
-            alert('Debes tener un apodo o nombre.');
-
-        } else if (password == '') {
-            alert('Debes tener una contraseña.');
-
-        } else if (password != confirm_password) {
-            alert('Las contraseñas no son iguales.');
-
+        if (password != confirm_password) {
+            alert.innerHTML = 'Las contraseñas no coinciden.'
+            alert.style.display = 'block';
         } else {
             registerUser(username, nickname, password);
         }
 
        
     });
+
+    // ---------------------------------------------------------------------------
+
+    const usernameInput = document.getElementById('username');
+    const nicknameInput = document.getElementById('nickname');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+
+    const submitBtn = document.getElementById('submit-btn');
+
+    function checkInputs() {
+        const username = usernameInput.value;
+        const nickname = nicknameInput.value;
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if ((username && nickname) && (password && confirmPassword)) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    usernameInput.addEventListener('input', checkInputs);
+    nicknameInput.addEventListener('input', checkInputs);
+    passwordInput.addEventListener('input', checkInputs);
+    confirmPasswordInput.addEventListener('input', checkInputs);
 });

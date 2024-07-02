@@ -1,0 +1,61 @@
+.left-side {
+    background-image: url(/img/auth-training.jpeg);
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+.right-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.form-control {
+    background-color: #EEEEEE;
+    border-width: 2px;
+    border-color: #EEEEEE;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    background-color: #f5f5f5;
+    border-width: 2px;
+    border-color: #383131;
+}
+
+.custom-btn {
+    color: white;
+    background-color: #DC0000;
+}
+
+.custom-btn:disabled {
+    color: white;
+    background-color: #DC0000;
+}
+
+.custom-btn:hover {
+    color: white;
+    background-color: #f72727;
+}
+
+.custom-link {
+    color: #c90000;
+    text-decoration: none;
+}
+
+.alert {
+    padding: 6px;
+    font-size: smaller;
+}
+
+.input-group-text {
+    cursor:pointer;
+}
+
+.glass-effect {
+    border: #fafafa10 solid 2px;
+    background-color: #fafafa10;
+    backdrop-filter: blur(1rem);
+}

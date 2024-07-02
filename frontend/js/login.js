@@ -15,15 +15,19 @@ function authenticateUser(username, password) {
                 localStorage.setItem('password', data.password);
                 window.location.href = 'html/home.html';
             } else {
-                console.log('Usuario o contraseña invalida');
+                const alert = document.getElementById('alert');
+                alert.style.display = 'block';
             }
         })
         .catch(error => console.error('El servidor fallo:', error));
 }
 
 document.addEventListener('DOMContentLoaded' , function() {
-
     console.log(localStorage);
+
+    const alert = document.getElementById('alert');
+    alert.style.display = 'none';
+
     document.getElementById('loginForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -32,4 +36,37 @@ document.addEventListener('DOMContentLoaded' , function() {
 
         authenticateUser(username, password);
     });
+
+    // ---------------------------------------------------------------------------
+
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function checkInputs() {
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+
+        if (username && password) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    usernameInput.addEventListener('input', checkInputs);
+    passwordInput.addEventListener('input', checkInputs);
+
+    // ----------------------------------------------------------
+
+    document.getElementById('togglePassword').addEventListener('click', function () {
+        
+        const passwordField = document.getElementById('password');
+        const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', passwordFieldType);
+        
+        this.querySelector('i').classList.toggle('bi-eye');
+        this.querySelector('i').classList.toggle('bi-eye-slash');
+    });
+    
 });

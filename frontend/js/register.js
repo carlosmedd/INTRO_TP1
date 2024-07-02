@@ -1,10 +1,10 @@
-function authenticateUser(username, password) {
-    fetch('http://localhost:5000/login', {
+function registerUser(username, nickname, password) {
+    fetch('http://localhost:5000/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ username, password }),
+            body: JSON.stringify({ username, nickname, password }),
         })
         .then(response => response.json())
         .then(data => {
@@ -13,9 +13,14 @@ function authenticateUser(username, password) {
                 localStorage.setItem('nickname', data.nickname);
                 localStorage.setItem('username', data.username);
                 localStorage.setItem('password', data.password);
-                window.location.href = 'html/home.html';
+                
+                console.log(localStorage);
+                alert("Usuario creado existosamente");
+                window.location.href = 'http://127.0.0.1:8000/html/home.html';
+
             } else {
                 const alert = document.getElementById('alert');
+                alert.innerHTML = 'El nombre de usuario ya esta en uso.';
                 alert.style.display = 'block';
             }
         })
@@ -28,26 +33,40 @@ document.addEventListener('DOMContentLoaded' , function() {
     const alert = document.getElementById('alert');
     alert.style.display = 'none';
 
-    document.getElementById('loginForm').addEventListener('submit', function(event) {
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
         const username = document.getElementById('username').value;
+        const nickname = document.getElementById('nickname').value;
         const password = document.getElementById('password').value;
+        const confirm_password = document.getElementById('confirm_password').value;
 
-        authenticateUser(username, password);
+        if (password != confirm_password) {
+            alert.innerHTML = 'Las contraseñas no coinciden.'
+            alert.style.display = 'block';
+        } else {
+            registerUser(username, nickname, password);
+        }
+
+       
     });
 
     // ---------------------------------------------------------------------------
 
     const usernameInput = document.getElementById('username');
+    const nicknameInput = document.getElementById('nickname');
     const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
+
     const submitBtn = document.getElementById('submit-btn');
 
     function checkInputs() {
         const username = usernameInput.value;
+        const nickname = nicknameInput.value;
         const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
 
-        if (username && password) {
+        if ((username && nickname) && (password && confirmPassword)) {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;
@@ -55,18 +74,7 @@ document.addEventListener('DOMContentLoaded' , function() {
     }
 
     usernameInput.addEventListener('input', checkInputs);
+    nicknameInput.addEventListener('input', checkInputs);
     passwordInput.addEventListener('input', checkInputs);
-
-    // ----------------------------------------------------------
-
-    document.getElementById('togglePassword').addEventListener('click', function () {
-        
-        const passwordField = document.getElementById('password');
-        const passwordFieldType = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordField.setAttribute('type', passwordFieldType);
-        
-        this.querySelector('i').classList.toggle('bi-eye');
-        this.querySelector('i').classList.toggle('bi-eye-slash');
-    });
-    
+    confirmPasswordInput.addEventListener('input', checkInputs);
 });

@@ -23,9 +23,35 @@ def login():
             "id": user.id,
             "nickname": user.nickname,
             "username": user.username,
-            "password": user.password}), 200
+            "password": user.password
+            }), 200
     else:
         return jsonify({"success": False, "message": "Credenciales inválidas"}), 401 
+
+@app.route('/register', methods=['POST'])
+def register():
+    data = request.json
+    username = data.get('username')
+    nickname = data.get('nickname')
+    password = data.get('password')
+
+    existing_user = User.query.filter_by(username=username).first()
+
+    if existing_user:
+        return jsonify({"success" : False, "message": "El usuario ya existe"}), 400
+    else:
+        new_user = User(username=username, nickname=nickname, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+
+        user = User.query.filter_by(username=username, password=password).first()
+        return jsonify({
+            "success": True, 
+            "id": user.id,
+            "nickname": user.nickname,
+            "username": user.username,
+            "password": user.password
+            }), 201
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

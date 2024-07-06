@@ -1,6 +1,6 @@
 function registerUser(username, nickname, password) {
     fetch('http://localhost:5000/register', {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -16,7 +16,7 @@ function registerUser(username, nickname, password) {
                 
                 console.log(localStorage);
                 alert("Usuario creado existosamente");
-                window.location.href = 'http://127.0.0.1:8000/html/home.html';
+                window.location.href = 'http://127.0.0.1:8000/mi_rutina';
 
             } else {
                 const alert = document.getElementById('alert');

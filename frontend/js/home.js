@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded' , function() {
     if (nickname) {
         document.getElementById('welcomeMessage').textContent = `Bienvenido ${nickname}`;
     } else {
-        window.location.href = '/index.html';   
+        window.location.href = 'http://127.0.0.1:8000/register';   
     }
 
     document.getElementById('logoutButton').addEventListener('click', function() {
@@ -13,6 +13,6 @@ document.addEventListener('DOMContentLoaded' , function() {
         localStorage.removeItem('nickname');
         localStorage.removeItem('username');
         localStorage.removeItem('password');
-        window.location.href = '/index.html';
+        window.location.href = 'http://127.0.0.1:8000/';
     });
 });

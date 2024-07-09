@@ -84,6 +84,37 @@ def add_comment():
             "success": True, 
             }), 201
 
+@app.route('/comments')
+def get_comments():
+    try:
+        comentarios = Comment.query.all()
+        comentarios_data = []
+        for comentario in comentarios:
+            user = User.query.filter_by(id = comentario.user_id).first()
+            comentario_data = {
+                "id": comentario.id,
+                "comment": comentario.comment,
+                "name": user.nickname,
+                "date": comentario.created,
+                "user_id": user.id,            
+                "responses": []
+            }
+            for respuesta in comentario.responses:
+                user_response = User.query.filter_by(id = respuesta.user_id).first()
+                respuesta_data = {
+                    "response": respuesta.response,
+                    "name": user_response.nickname,
+                    "user_id": user_response.id,
+                    "date": respuesta.created
+                }
+                comentario_data['responses'].append(respuesta_data)
+            comentarios_data.append(comentario_data)
+
+        return jsonify(comentarios_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
 if __name__ == '__main__':
     db.init_app(app)
     with app.app_context():

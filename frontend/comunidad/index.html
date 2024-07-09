@@ -63,12 +63,7 @@
         </div>
     </div>
     <div id="comentarios" class="container p-3">
-        <div class="row">
-            <div class="col">
-                <h5>Card title</h5>
-                <p>Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-        </div>
+        
     </div>
     
         
@@ -101,7 +96,83 @@
         })
         .catch(error => console.error('El servidor fallo:', error));
     }
+
+    //------------------------------------------------------------------------
+
+    function eliminar(){
+    }
+    
+    function editar(){
+    }
+
+    //------------------------------------------------------------------------
+
+    fetch("http://localhost:5000/comments")
+    .then(response => response.json())
+    .then(content => {
+        const container = document.getElementById("comentarios");
         
+        for (let index = 0; index < content.length; index++){
+            
+            const row = document.createElement("div");
+            row.setAttribute("class","row");
+
+            const col = document.createElement("div");
+            col.setAttribute("class","col");
+
+            const card = document.createElement("div");
+            card.setAttribute("class","card");
+
+            const card_body = document.createElement("div");
+            card_body.setAttribute("class","card-body");
+            
+            const user = document.createElement("h5");
+            user.setAttribute("class","card-tittle");
+            user.append(content[index].name);
+            
+            const date = document.createElement("h6");
+            date.setAttribute("class","card-subtitle mb-2 text-body-secondary");
+            date.append(content[index].date);
+
+            const comentario = document.createElement("p");
+            comentario.setAttribute("class","card-text");
+            comentario.append(content[index].comment);
+
+            const boton_respuesta = document.createElement("a");
+            boton_respuesta.setAttribute("class","link-offset-2 link-underline link-underline-opacity-0 btn btn-sm");
+            boton_respuesta.append("Respuestas");
+            
+            card_body.append(user);
+            card_body.append(date);
+            card_body.append(comentario);
+            card_body.append(boton_respuesta);
+
+            if (id == content[index].user_id){
+                const boton_eliminar = document.createElement("button");
+                boton_eliminar.setAttribute("class","btn btn-sm");
+                boton_eliminar.setAttribute("type","button");
+                boton_eliminar.setAttribute("onclick","eliminar()");
+                boton_eliminar.append("Eliminar");
+
+                const boton_editar = document.createElement("button");
+                boton_editar.setAttribute("class","btn btn-sm");
+                boton_editar.setAttribute("type","button");
+                boton_editar.setAttribute("type","editar()");
+                boton_editar.append("Editar");
+                
+                card_body.append(boton_editar);
+                card_body.append(boton_eliminar);
+            }
+            
+            card.append(card_body);
+            col.append(card);
+            row.append(col);
+            
+            container.append(row);
+        }
+        })
+    .catch(error => console.error('El servidor fallo:', error));
+    
     </script>
 
 </body>

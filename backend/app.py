@@ -84,6 +84,17 @@ def add_comment():
             "success": True, 
             }), 201
 
+@app.route('/comments', methods=['DELETE'])
+def delete_comment():
+    data = request.json
+    id_comentario = data.get("id_comentario")
+    comment = Comment.query.filter_by(id=id_comentario).first()
+    db.session.delete(comment)
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
+
 @app.route('/comments')
 def get_comments():
     try:

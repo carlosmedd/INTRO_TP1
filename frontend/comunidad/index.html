@@ -99,7 +99,24 @@
 
     //------------------------------------------------------------------------
 
-    function eliminar(){
+    function eliminar(content){
+        const id_comentario = content.offsetParent.attributes[0].value;
+        fetch('http://localhost:5000/comments', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({id_comentario}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert("El comentario no pudo ser eliminado");
+            }
+        })
+        .catch(error => console.error('El servidor fallo:', error));
     }
     
     function editar(){
@@ -114,13 +131,8 @@
         
         for (let index = 0; index < content.length; index++){
             
-            const row = document.createElement("div");
-            row.setAttribute("class","row");
-
-            const col = document.createElement("div");
-            col.setAttribute("class","col");
-
             const card = document.createElement("div");
+            card.setAttribute("id", content[index].id);
             card.setAttribute("class","card");
 
             const card_body = document.createElement("div");
@@ -151,13 +163,13 @@
                 const boton_eliminar = document.createElement("button");
                 boton_eliminar.setAttribute("class","btn btn-sm");
                 boton_eliminar.setAttribute("type","button");
-                boton_eliminar.setAttribute("onclick","eliminar()");
+                boton_eliminar.setAttribute("onclick","eliminar(this)");
                 boton_eliminar.append("Eliminar");
 
                 const boton_editar = document.createElement("button");
                 boton_editar.setAttribute("class","btn btn-sm");
                 boton_editar.setAttribute("type","button");
-                boton_editar.setAttribute("type","editar()");
+                boton_editar.setAttribute("type","editar(this)");
                 boton_editar.append("Editar");
                 
                 card_body.append(boton_editar);
@@ -165,10 +177,7 @@
             }
             
             card.append(card_body);
-            col.append(card);
-            row.append(col);
-            
-            container.append(row);
+            container.append(card);
         }
         })
     .catch(error => console.error('El servidor fallo:', error));

@@ -1,11 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from models import db, User, Exercise
+from models import db, User, Exercise, Comment
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://user_test:Yrrz34cwppuyk@localhost:5432/users_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://gabriel:140703@localhost:5432/users_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 @app.route('/login', methods=['POST'])
@@ -71,6 +71,18 @@ def get_exercises():
     except Exception as error:
         print('Error', error)
         return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/comments', methods=['POST'])
+def add_comment():
+    data = request.json
+    comentario = data.get('comment')
+    id = data.get('id')
+    new_comment = Comment(comment = comentario, user_id = id)
+    db.session.add(new_comment)
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
 
 if __name__ == '__main__':
     db.init_app(app)

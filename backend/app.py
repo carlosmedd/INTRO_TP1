@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from models import db, User
+from models import db, User, Exercise
 
 app = Flask(__name__)
 CORS(app)
@@ -52,7 +52,25 @@ def register():
             "password": user.password
             }), 201
 
+@app.route('/exercises', methods=['GET'])
+def get_exercises():
+    try:
+        exercises = Exercise.query.all()
+        exercises_data = []
+        for exercise in exercises:
+            exercise_data = {
+                'id': exercise.id,
+                'name': exercise.name,
+                'img1': exercise.img1,
+                'img2': exercise.img2
+            }
+            exercises_data.append(exercise_data)
+            
+        return jsonify({'exercises': exercises_data}), 200
 
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
 
 if __name__ == '__main__':
     db.init_app(app)

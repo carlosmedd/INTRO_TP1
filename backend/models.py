@@ -36,8 +36,9 @@ class Exercise(db.Model):
     __tablename__ = 'ejercicios'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
-    muscule = db.Column(db.String(255), nullable=False)
-    pic = db.Column(db.String(255), nullable=False)
+    muscle = db.Column(db.String(255), nullable=False)
+    img1 = db.Column(db.String(255), nullable=False)
+    img2 = db.Column(db.String(255), nullable=False)
 
 class Comment(db.Model):
     __tablename__ = 'comentarios'

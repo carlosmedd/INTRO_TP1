@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from models import db, User, Exercise, Comment
@@ -83,6 +84,21 @@ def add_comment():
     return jsonify({
             "success": True, 
             }), 201
+
+@app.route('/comments', methods=['PUT'])
+def edit_comment():
+    data = request.json
+    comment_edt = data.get("comment_edt")
+    id_comment = data.get("id_comment")
+    new_date =datetime.datetime.now()
+    comment = Comment.query.filter_by(id=id_comment).first()
+    comment.comment = comment_edt
+    comment.created = new_date
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
+
 
 @app.route('/comments', methods=['DELETE'])
 def delete_comment():

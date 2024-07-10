@@ -63,7 +63,6 @@
         </div>
     </div>
     <div id="comentarios" class="container p-3">
-        
     </div>
     
         
@@ -99,27 +98,85 @@
 
     //------------------------------------------------------------------------
 
-    function eliminar(content){
-        const id_comentario = content.offsetParent.attributes[0].value;
+    function confirmar_cambios(event){
+        event.preventDefault();
+        
+        const id_comment = event.target.offsetParent.attributes[0].value
+        const formData = new FormData(event.target);
+        const comment_edt = formData.get("comentario");
+        
         fetch('http://localhost:5000/comments', {
-            method: 'DELETE',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({id_comentario}),
+            body: JSON.stringify({comment_edt, id_comment}),
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 window.location.reload();
             } else {
-                alert("El comentario no pudo ser eliminado");
+                alert("El comentario no pudo ser editado");
             }
         })
         .catch(error => console.error('El servidor fallo:', error));
     }
+
+    //------------------------------------------------------------------------
+
+    function eliminar(content){
+        if (window.confirm("¿Seguro quieres eliminar este comentario?")){
+            const id_comentario = content.offsetParent.attributes[0].value;
+            fetch('http://localhost:5000/comments', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({id_comentario}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                } else {
+                    alert("El comentario no pudo ser eliminado");
+                }
+            })
+            .catch(error => console.error('El servidor fallo:', error));
+        }
+    }
     
-    function editar(){
+    function editar(data){
+        const item = data.offsetParent;
+        const card = data.offsetParent.firstChild;
+        const id_comentario = data.offsetParent.attributes[0].value;
+        const comment = data.offsetParent.firstChild.childNodes[2].innerText;
+        
+        card.remove();
+        
+        const form = document.createElement("form");
+        form.setAttribute("onsubmit", "confirmar_cambios(event)")
+        
+        const div = document.createElement("div");
+        div.setAttribute("class", "mb-3")
+
+        const comentario = document.createElement("textarea");
+        comentario.setAttribute("class", "form-control");
+        comentario.setAttribute("rows", "2");
+        comentario.setAttribute("name", "comentario");
+        comentario.append(comment);
+        
+        div.append(comentario);
+
+        const confirmar = document.createElement("button");
+        confirmar.setAttribute("class", "btn btn-primary")
+        confirmar.setAttribute("type", "submit");
+        confirmar.append("Confirmar cambios");
+
+        form.append(div);
+        form.append(confirmar);
+        item.append(form);
     }
 
     //------------------------------------------------------------------------
@@ -162,14 +219,12 @@
             if (id == content[index].user_id){
                 const boton_eliminar = document.createElement("button");
                 boton_eliminar.setAttribute("class","btn btn-sm");
-                boton_eliminar.setAttribute("type","button");
                 boton_eliminar.setAttribute("onclick","eliminar(this)");
                 boton_eliminar.append("Eliminar");
 
                 const boton_editar = document.createElement("button");
                 boton_editar.setAttribute("class","btn btn-sm");
-                boton_editar.setAttribute("type","button");
-                boton_editar.setAttribute("type","editar(this)");
+                boton_editar.setAttribute("onclick","editar(this)");
                 boton_editar.append("Editar");
                 
                 card_body.append(boton_editar);

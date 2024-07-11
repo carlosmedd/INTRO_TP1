@@ -1,11 +1,12 @@
+import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from models import db, User, Exercise
+from models import db, User, Exercise, Comment, Response
 
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://user_test:Yrrz34cwppuyk@localhost:5432/users_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://gabriel:140703@localhost:5432/users_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 @app.route('/login', methods=['POST'])
@@ -71,6 +72,135 @@ def get_exercises():
     except Exception as error:
         print('Error', error)
         return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/comments', methods=['POST'])
+def add_comment():
+    data = request.json
+    comentario = data.get('comment')
+    id = data.get('id')
+    new_comment = Comment(comment = comentario, user_id = id)
+    db.session.add(new_comment)
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
+
+@app.route('/comments', methods=['PUT'])
+def edit_comment():
+    data = request.json
+    comment_edt = data.get("comment_edt")
+    id_comment = data.get("id_comment")
+    new_date =datetime.datetime.now()
+    comment = Comment.query.filter_by(id=id_comment).first()
+    comment.comment = comment_edt
+    comment.created = new_date
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
+
+
+@app.route('/comments', methods=['DELETE'])
+def delete_comment():
+    data = request.json
+    id_comentario = data.get("id_comentario")
+    comment = Comment.query.filter_by(id=id_comentario).first()
+    for respuesta in comment.responses:
+        res = Response.query.filter_by(id=respuesta.id).first()
+        db.session.delete(res)
+        db.session.commit()    
+    db.session.delete(comment)
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
+
+@app.route('/comments')
+def get_comments():
+    try:
+        comentarios = Comment.query.all()
+        comentarios_data = []
+        for comentario in comentarios:
+            user = User.query.filter_by(id = comentario.user_id).first()
+            comentario_data = {
+                "id": comentario.id,
+                "comment": comentario.comment,
+                "name": user.nickname,
+                "date": comentario.created,
+                "user_id": user.id,
+            }
+            comentarios_data.append(comentario_data)
+
+        return jsonify(comentarios_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/comments/<id>')
+def get_comment(id):
+    try:
+        comentario = Comment.query.filter_by(id=id).first()
+        user = User.query.filter_by(id = comentario.user_id).first()
+        comentario_data = {
+            "id": comentario.id,
+            "comment": comentario.comment,
+            "name": user.nickname,
+            "date": comentario.created,
+            "user_id": user.id,            
+            "responses": []
+        }
+        for respuesta in comentario.responses:
+            user_response = User.query.filter_by(id = respuesta.user_id).first()
+            respuesta_data = {
+                "id": respuesta.id,    
+                "response": respuesta.response,
+                "name": user_response.nickname,
+                "user_id": user_response.id,
+                "date": respuesta.created
+            }
+            comentario_data['responses'].append(respuesta_data)
+        return jsonify(comentario_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/responses', methods=['POST'])
+def add_response():
+    data = request.json
+    respuesta = data.get('response')
+    id = data.get('id')
+    comentario_id = data.get("id_comentario")
+    new_response = Response(response = respuesta, user_id = id, comment_id = comentario_id)
+    db.session.add(new_response)
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
+
+@app.route('/responses', methods=['PUT'])
+def edit_response():
+    data = request.json
+    response_edt = data.get("response_edt")
+    id_response = data.get("id_response")
+    new_date =datetime.datetime.now()
+    response = Response.query.filter_by(id=id_response).first()
+    response.response = response_edt
+    response.created = new_date
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
+
+@app.route('/responses', methods=['DELETE'])
+def delete_response():
+    data = request.json
+    id_respuesta = data.get("id_response")
+    response = Response.query.filter_by(id=id_respuesta).first()  
+    db.session.delete(response)
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201
 
 if __name__ == '__main__':
     db.init_app(app)

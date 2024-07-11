@@ -53,7 +53,7 @@
             <div class="col">
                 <form id="form" onsubmit="comentar(event)">
                     <div class="mb-3">
-                        <textarea name="comentario" class="form-control" placeholder="Añadir comentario" rows="2"></textarea>
+                        <textarea required name="comentario" class="form-control" placeholder="Añadir comentario" rows="2"></textarea>
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar</button>
                 </form>
@@ -65,7 +65,6 @@
     <div id="comentarios" class="container p-3">
     </div>
     
-        
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
     const id = localStorage.getItem('id');
@@ -150,7 +149,6 @@
     function editar(data){
         const item = data.offsetParent;
         const card = data.offsetParent.firstChild;
-        const id_comentario = data.offsetParent.attributes[0].value;
         const comment = data.offsetParent.firstChild.childNodes[2].innerText;
         
         card.remove();
@@ -209,7 +207,9 @@
 
             const boton_respuesta = document.createElement("a");
             boton_respuesta.setAttribute("class","link-offset-2 link-underline link-underline-opacity-0 btn btn-sm");
+            boton_respuesta.setAttribute("href",`/comunidad/comentario?id=${content[index].id}`);
             boton_respuesta.append("Respuestas");
+            
             
             card_body.append(user);
             card_body.append(date);

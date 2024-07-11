@@ -1,6 +1,6 @@
 function registerUser(username, nickname, password) {
     fetch('http://localhost:5000/register', {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },

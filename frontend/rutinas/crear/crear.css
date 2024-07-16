@@ -1,0 +1,43 @@
+.modal-body .card {
+    height: 100%;
+}
+
+.modal-body .card-activado {
+    box-shadow: 0 0px 1px 2px rgb(1, 107, 49);
+}
+
+.modal-body .card:hover {
+    cursor: pointer;
+}
+
+
+.modal-body .card-img-container {
+    height: 200px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-body .card-img-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; 
+    margin: 0 auto; 
+}
+.modal-body .card-body {
+    height: 60px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: rgb(30, 30, 30); 
+}
+
+.modal-body .activado {
+    background-color: rgb(1, 32, 14);
+}
+
+.modal-body .card-body h5 {
+    color: rgb(255, 255, 255);
+}
+
+.modal-body .activado h5 {
+    color: rgb(175, 223, 195);
+}

@@ -301,8 +301,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 listaEjercicios[dia][0] = -1;
 
         })
-        console.log(listaEjercicios);
-        alert("Rutina creada... mas o menos")
+        fetch('http://localhost:5000/rutines', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({listaEjercicios}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("rutina creada de verdad")
+            } else {
+                alert("error")
+            }
+        })
+        .catch(error => console.error('El servidor fallo:', error));
     })
     
 });        
+console.log("hola");

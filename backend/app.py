@@ -1,7 +1,7 @@
 import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from models import db, User, Exercise, Comment, Response
+from models import db, User, Exercise, Comment, Response, Rutine, Exercise_user
 
 app = Flask(__name__)
 CORS(app)
@@ -201,6 +201,84 @@ def delete_response():
     return jsonify({
             "success": True, 
             }), 201
+
+def data_ejercicios(ejercicio ,day):
+    if (ejercicio.days == day):
+        base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+        ejercicio_day_data = {
+            "id": ejercicio.id,
+            "exercise": base_ejercicio.name
+        }
+    return ejercicio_day_data
+
+@app.route('/rutines')
+def get_rutines():
+    try:
+        rutinas = Rutine.query.all()
+        rutinas_data = []
+        for rutina in rutinas:
+            user = User.query.filter_by(id = rutina.user_id).first()
+            rutina_data = {
+                "id": rutina.id,
+                "description": rutina.description, 
+                "name_rutine": rutina.name,
+                "name": user.nickname,
+                "date": rutina.created,
+                "Lunes": [],
+                "Martes": [],
+                "Miercoles": [],
+                "Jueves": [],
+                "Viernes": [],
+                "Sabado": [],
+                "Domingo": []
+            }
+            ejercicios = Exercise_user.query.filter_by(rutine_id = rutina.id).all()
+            for ejercicio in ejercicios:
+                rutina_data['Lunes'].append(data_ejercicios(ejercicio, 0))
+                rutina_data['Martes'].append(data_ejercicios(ejercicio, 1))
+                rutina_data['Miercoles'].append(data_ejercicios(ejercicio, 2))
+                rutina_data['Jueves'].append(data_ejercicios(ejercicio, 3))
+                rutina_data['Viernes'].append(data_ejercicios(ejercicio, 4))
+                rutina_data['Sabado'].append(data_ejercicios(ejercicio, 5))
+                rutina_data['Domingo'].append(data_ejercicios(ejercicio, 6))
+            rutinas_data.append(rutina_data)
+        return jsonify(rutinas_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/rutines', methods=['POST'])
+def create_rutine():
+    data = request.json
+    info = data.get('listaEjercicios')
+    print(info)
+
+@app.route('/user_exercises')
+def get_exercises_by_user():
+    try:
+        exercises = Exercise_user.query.all()
+        exercises_data = []
+        for exercise in exercises:
+            ejercicio = Exercise.query.filter_by(id = exercise.exercises_id).first()
+            dia = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]                
+            exercise_data = {
+                "id": exercise.id,
+                "user_id": exercise.user_id, 
+                "name": ejercicio.name,
+                "img1": ejercicio.img1,
+                "img2": ejercicio.img2,
+                "weight": exercise.weight,
+                "sets": exercise.sets,
+                "repetition": exercise.repetition,
+                "day": dia[exercise.days],
+                "rutine_id": exercise.rutine_id
+            }
+            exercises_data.append(exercise_data)
+        return jsonify(exercises_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
 
 if __name__ == '__main__':
     db.init_app(app)

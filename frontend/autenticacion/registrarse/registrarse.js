@@ -77,4 +77,27 @@ document.addEventListener('DOMContentLoaded' , function() {
     nicknameInput.addEventListener('input', checkInputs);
     passwordInput.addEventListener('input', checkInputs);
     confirmPasswordInput.addEventListener('input', checkInputs);
+
+    // ----------- mostrar contraseña -----------
+
+    const togglesPassword = document.querySelectorAll('#togglePassword, #toggleConfirmPassword');
+    console.log(togglesPassword);
+
+    togglesPassword.forEach(toggle => {
+
+        toggle.addEventListener('click', function () {
+            const passwordFields = document.querySelectorAll('#password, #confirm_password');
+            
+            passwordFields.forEach(field => {
+                const fieldType = field.getAttribute('type') === 'password' ? 'text' : 'password';
+                field.setAttribute('type', fieldType);
+            });
+
+            togglesPassword.forEach(btn => {
+                btn.querySelector('i').classList.toggle('bi-eye');
+                btn.querySelector('i').classList.toggle('bi-eye-slash');
+            });
+        });
+    });
+
 });

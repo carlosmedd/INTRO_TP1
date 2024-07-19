@@ -30,7 +30,8 @@ class Exercise_user(db.Model):
     weight = db.Column(db.Integer, nullable=False, default=0)
     sets = db.Column(db.Integer, nullable=False, default=0)
     repetition = db.Column(db.Integer, nullable=False, default=0)
-    days = db.Column(db.Integer, nullable=False)
+    day = db.Column(db.Integer, nullable=False)
+    rest = db.Column(db.Integer, nullable=False)
     rutine_id = db.Column(db.Integer, db.ForeignKey('rutinas.id'))
 
 class Exercise(db.Model):

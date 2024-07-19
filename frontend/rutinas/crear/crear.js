@@ -1,3 +1,5 @@
+const id = localStorage.getItem('id');
+
 let listaEjercicios = {
     lunes: [],
     martes: [],
@@ -301,12 +303,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 listaEjercicios[dia][0] = -1;
 
         })
+
         fetch('http://localhost:5000/rutines', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({listaEjercicios}),
+            body: JSON.stringify({descripcionRutina, nombreRutina, id, listaEjercicios}),
         })
         .then(response => response.json())
         .then(data => {
@@ -319,5 +322,4 @@ document.addEventListener('DOMContentLoaded', function () {
         .catch(error => console.error('El servidor fallo:', error));
     })
     
-});        
-console.log("hola");
+});

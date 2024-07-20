@@ -85,7 +85,25 @@
                                     <li><a class="dropdown-item" href='http://127.0.0.1:8000/rutinas/explorar/buscar?category=usuario1'>Usuario</a></li>
                                     <li><a class="dropdown-item" href='http://127.0.0.1:8000/rutinas/explorar/buscar?category=fecha1'>Fecha de creacion</a></li>
                                 </ul>
+
                             </div>
+                        </div>
+                        <div class="col">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Orden:
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" id="ascendente">Ascendente</a></li>
+                                    <li><a class="dropdown-item" id="descendente">Descendente</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
                         </div>
                     </div>
                 </div>
@@ -98,29 +116,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         const dayNames = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
-        function buscar(event){
-            event.preventDefault();
-            const formData = new FormData(event.target);
-            const que_buscar = formData.get("a_buscar");
-            if (que_buscar == "") {
-                window.location.href = "/rutinas/explorar";
-            }
-            window.location.replace(`http://127.0.0.1:8000/rutinas/explorar/buscar?name=${que_buscar}`);
-        }
-
-        fetch("http://localhost:5000/rutines")
-        .then(response => response.json())
-        .then(content => {
+        const params = new URLSearchParams(window.location.search);
+        
+        const orden_1 = document.getElementById("ascendente")
+        const orden_2 = document.getElementById("descendente")
+        function data(content){
             const container = document.getElementById("listar_rutinas");
             tabla = ``;
             for (let index = 0; index < content.length; index++){
+                
                 inicio = `
                 <hr class="border border-black border-2" >
                 <div class="row text-center">
                     <div class="col-1">
                     </div>
                     <div class="col">
-                        <a class="h5" href="http://127.0.0.1:8000/rutinas/explorar/${content[index].id}">${content[index].name_rutine}</a>
+                        <h5>${content[index].name_rutine}</h5>
                     </div>
                     <div class="col-1">
                     </div>
@@ -265,8 +276,34 @@
                 tabla = tabla + inicio
             }
             container.innerHTML = tabla
-        })
-        .catch(error => console.error('El servidor fallo:', error));
+        }
+
+        
+        for (const key of params.keys()) {
+            filtro = params.get(key)
+            filtro = filtro.slice(0,filtro.length - 1)
+            orden_1.setAttribute("href",`http://127.0.0.1:8000/rutinas/explorar/buscar?category=${filtro}1`)
+            orden_2.setAttribute("href",`http://127.0.0.1:8000/rutinas/explorar/buscar?category=${filtro}2`)
+            if (key == "name"){
+                fetch(`http://localhost:5000/rutines/search/${params.get(key)}`)
+                .then(response => response.json())
+                .then(data)
+                .catch(error => console.error('El servidor fallo:', error));
+            }else{
+                fetch(`http://localhost:5000/rutines/filter/${params.get(key)}`)
+                .then(response => response.json())
+                .then(data)
+                .catch(error => console.error('El servidor fallo:', error));
+            }
+        }
+
+        function buscar(event){
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const que_buscar = formData.get("a_buscar");
+            window.location.replace(`http://127.0.0.1:8000/rutinas/explorar/buscar?name=${que_buscar}`);
+        }
+
     </script>
 </body>
 

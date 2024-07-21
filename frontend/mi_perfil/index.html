@@ -45,23 +45,38 @@
     <div class="container">
         <div class="col text-center">
             <h1>MI PERFIL</h1>
-            <p>Bienvenido: (nombre)</p>
+            <p>Bienvenido: {{ username }}</p>
         </div>
-        <div class="container-informacion">
-            <h4>INFORMACIÓN BÁSICA DEL USUARIO</h4>
-            <p>Nombre completo</p>
-            <p>Nombre de usuario</p>
-            <p>Correo electrónico</p>
-            <p>Cambio de contraseña</p>
-            <p>Cerrar sesion</p>
+        
+        <div class="container-info">
+            <h3>INFORMACIÓN BÁSICA DEL USUARIO</h3>
+            <div class="nombre">
+                <label for="">Nombre Completo</label>
+                <p>(Nombre completo)</p>
+            </div>
+            <div class="usuario">
+                <label for="">Usuario</label>
+                <p>(Nombre de usuario)</p>
+            </div>
+            <div class="correo">
+                <label for="">Correo Electronico</label>
+                <p>(Correo electrónico)</p>
+            </div>
+            <div class="contraseña">
+                <label for="">Contraseña</label>
+                <p>(Contraseña)</p>
+            </div>
+        </div>
+
+        <div class="container-rutinas">
+            <h3>RUTINAS DEL USUARIO</h3>
+
         </div>
 
 
-
-
+            <button class="btn-cerrar-sesion">Cerrar Sesión</button>
+        </div>
     </div>
-
-
 
 
 </body>

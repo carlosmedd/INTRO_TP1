@@ -1,0 +1,32 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Color de fondo gris claro */
+    color: #212529; /* Color de texto oscuro */
+    padding-top: 20px;
+  }
+  
+.container-info p{
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    width: 600px; 
+}
+  
+.btn-cerrar-sesion {
+    background-color: #ff1100; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interior */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar como bloque en línea */
+    font-size: 16px; /* Tamaño del texto */
+    margin: 0px; /* Margen exterior */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    border-radius: 5px; /* Bordes redondeados */
+}
+  
+.btn-cerrar-sesion:hover {
+    color: #ff1100;
+    background-color: transparent;
+    border: 1px solid #ff1100;
+}  

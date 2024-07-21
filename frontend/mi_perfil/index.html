@@ -45,26 +45,22 @@
     <div class="container">
         <div class="col text-center">
             <h1>MI PERFIL</h1>
-            <p>Bienvenido: {{ username }}</p>
+            <h2 id="saludo" class="text-center"></h2>
         </div>
         
         <div class="container-info">
             <h3>INFORMACIÓN BÁSICA DEL USUARIO</h3>
             <div class="nombre">
                 <label for="">Nombre Completo</label>
-                <p>(Nombre completo)</p>
+                <p id="nombre_completo"></p>
             </div>
             <div class="usuario">
                 <label for="">Usuario</label>
-                <p>(Nombre de usuario)</p>
-            </div>
-            <div class="correo">
-                <label for="">Correo Electronico</label>
-                <p>(Correo electrónico)</p>
+                <p id="usuario"></p>
             </div>
             <div class="contraseña">
                 <label for="">Contraseña</label>
-                <p>(Contraseña)</p>
+                <p>(cambiar contraseña)</p>
             </div>
         </div>
 
@@ -79,5 +75,40 @@
     </div>
 
 
+
+    <script>
+            document.addEventListener('DOMContentLoaded' , function() {
+            
+            const id = localStorage.getItem('id');
+            const nickname = localStorage.getItem('nickname');
+            const username= localStorage.getItem('username');
+            
+            if (id) {
+                document.getElementById('saludo').innerText = `Bienvenido ${nickname}`;
+            } else {
+                window.location.href = 'http://127.0.0.1:8000/register';   
+            }
+            if (id) {
+                document.getElementById('nombre_completo').innerText = `${username}`;
+            } else {
+                window.location.href = 'http://127.0.0.1:8000/register';   
+            }
+            if (id) {
+                document.getElementById('usuario').innerText = `${nickname}`;
+            } else {
+                window.location.href = 'http://127.0.0.1:8000/register';   
+            }
+
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('id');
+                localStorage.removeItem('nickname');
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+                window.location.href = 'http://127.0.0.1:8000/';
+            });
+        });
+        
+
+    </script>
 </body>
 </html>   

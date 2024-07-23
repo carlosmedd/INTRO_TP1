@@ -99,7 +99,6 @@ def edit_comment():
             "success": True, 
             }), 201
 
-
 @app.route('/comments', methods=['DELETE'])
 def delete_comment():
     data = request.json
@@ -442,58 +441,100 @@ def get_rutine_id (id):
             "name_rutine": rutina.name,
             "name": user.nickname,
             "date": rutina.created_at.strftime("%x"),
-            "Lunes": [],
-            "Martes": [],
-            "Miercoles": [],
-            "Jueves": [],
-            "Viernes": [],
-            "Sabado": [],
-            "Domingo": []
+            "lunes": [],
+            "martes": [],
+            "miercoles": [],
+            "jueves": [],
+            "viernes": [],
+            "sabado": [],
+            "domingo": []
         }
         ejercicios = Exercise_user.query.filter_by(rutine_id = rutina.id).all()
         for ejercicio in ejercicios:
             if (ejercicio.day == 0):
                 base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
                 ejercicio_day_data = {
-                    "exercise": base_ejercicio.name
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
                 }
-                rutina_data['Lunes'].append(ejercicio_day_data)
+                rutina_data['lunes'].append(ejercicio_day_data)
             if (ejercicio.day == 1):
                 base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
                 ejercicio_day_data = {
-                    "exercise": base_ejercicio.name
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
                 }
-                rutina_data['Martes'].append(ejercicio_day_data)
+                rutina_data['martes'].append(ejercicio_day_data)
             if (ejercicio.day == 2):
                 base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
                 ejercicio_day_data = {
-                    "exercise": base_ejercicio.name
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
                 }
-                rutina_data['Miercoles'].append(ejercicio_day_data)
+                rutina_data['miercoles'].append(ejercicio_day_data)
             if (ejercicio.day == 3):
                 base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
                 ejercicio_day_data = {
-                    "exercise": base_ejercicio.name
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
                 }
-                rutina_data['Jueves'].append(ejercicio_day_data)
+                rutina_data['jueves'].append(ejercicio_day_data)
             if (ejercicio.day == 4):
                 base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
                 ejercicio_day_data = {
-                    "exercise": base_ejercicio.name
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
                 }
-                rutina_data['Viernes'].append(ejercicio_day_data)
+                rutina_data['viernes'].append(ejercicio_day_data)
             if (ejercicio.day == 5):
                 base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
                 ejercicio_day_data = {
-                    "exercise": base_ejercicio.name
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
                 }
-                rutina_data['Sabado'].append(ejercicio_day_data)
+                rutina_data['sabado'].append(ejercicio_day_data)
             if (ejercicio.day == 6):
                 base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
                 ejercicio_day_data = {
-                    "exercise": base_ejercicio.name
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
                 }
-                rutina_data['Domingo'].append(ejercicio_day_data)
+                rutina_data['domingo'].append(ejercicio_day_data)
 
         return jsonify(rutina_data)
     except Exception as error:

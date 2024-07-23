@@ -314,9 +314,10 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert("rutina creada de verdad")
+                alert('Rutina creada existosamente. Puedes encontrarla en "Mi perfil" o en "Explorar"');
+                window.location.href = `http://127.0.0.1:8000/rutinas/explorar/buscar/?name=${nombreRutina}`;
             } else {
-                alert("error")
+                alert("error");
             }
         })
         .catch(error => console.error('El servidor fallo:', error));

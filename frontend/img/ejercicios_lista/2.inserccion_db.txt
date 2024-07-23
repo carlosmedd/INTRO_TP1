@@ -93,3 +93,57 @@ VALUES ('Sentadilla bulgara', 'cuadriceps', 'sentadilla_bulgara1.jpg', 'sentadil
 
 INSERT INTO ejercicios (name, muscle, img1, img2) 
 VALUES ('Sentadillas', 'cuadriceps', 'sentadillas1.jpg', 'sentadillas2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Cruces con poleas de pie', 'espalda', 'cruces_poleas_pie1.jpg', 'cruces_poleas_pie2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Remo en máquina', 'espalda', 'remo_maquina1.jpg', 'remo_maquina2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Pullover con polea', 'espalda', 'pullover_polea1.jpg', 'pullover_polea2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Hex press', 'pectorales', 'hex_press1.jpg', 'hex_press2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Press floor', 'pectorales', 'press_floor1.jpg', 'press_floor2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Sentadilla en máquina Smith', 'cuádriceps', 'sentadilla_smith_cuadriceps1.jpg', 'sentadilla_smith_cuadriceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Sentadilla Hack con la barra por detrás', 'cuádriceps', 'sentadilla_hack_cuadriceps1.jpg', 'sentadilla_hack_cuadriceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Prensa 45°', 'cuádriceps', 'prensa_45_grados_cuadriceps1.jpg', 'prensa_45_grados_cuadriceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Elevación de pelvis', 'isquiotibiales', 'elevacion_pelvis_isquiotibiales1.jpg', 'elevacion_pelvis_isquiotibiales2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Curl nórdico', 'isquiotibiales', 'curl_nordico_isquiotibiales1.jpg', 'curl_nordico_isquiotibiales2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Curl femoral en máquina sentado', 'isquiotibiales', 'curl_femoral_maquina_isquiotibiales1.jpg', 'curl_femoral_maquina_isquiotibiales2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Extensiones con mancuerna en banco', 'tríceps', 'extensiones_mancuerna_banco_triceps1.jpg', 'extensiones_mancuerna_banco_triceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Flexiones diamante', 'tríceps', 'flexiones_diamante_triceps1.jpg', 'flexiones_diamante_triceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Patada horizontal de tríceps con mancuerna', 'tríceps', 'patada_horizontal_triceps_mancuerna_triceps1.jpg', 'patada_horizontal_triceps_mancuerna_triceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Extensiones de tríceps a una mano con mancuerna', 'tríceps', 'extensiones_triceps_una_mano_mancuerna_triceps1.jpg', 'extensiones_triceps_una_mano_mancuerna_triceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Spider curl', 'bíceps', 'spider_curl_biceps1.jpg', 'spider_curl_biceps2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Curl de bíceps alterno con mancuernas en banco inclinado', 'bíceps', 'curl_biceps_alterno_mancuernas_banco_inclinado1.jpg', 'curl_biceps_alterno_mancuernas_banco_inclinado2.jpg');
+
+INSERT INTO ejercicios (name, muscle, img1, img2) 
+VALUES ('Máquina de crunch con cable', 'abdominales', 'maquina_crunch_cable1.jpg', 'maquina_crunch_cable2.jpg');

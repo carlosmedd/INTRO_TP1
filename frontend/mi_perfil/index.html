@@ -114,7 +114,7 @@
             }
 
             // Guardar cambios en el usuario
-    document.getElementById('guardarUsuario').addEventListener('click', function() {
+        document.getElementById('guardarUsuario').addEventListener('click', function() {
         const nuevoUsuario = document.getElementById('usuario').innerText.trim();  // Obtiene el contenido del <p> y elimina espacios en blanco
 
         const data = {
@@ -129,9 +129,17 @@
             },
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (response.status === 400) {
+                // Si el nombre de usuario ya está en uso, muestra una alerta
+                alert('El nombre de usuario ya está en uso. Por favor, elija otro.');
+                throw new Error('Nombre de usuario duplicado');
+            } else {
+                return response.json()
+            }
+        })
         .then(data => {
-            if (data.success) {
+            if (data && data.success) {
                 localStorage.setItem('username', nuevoUsuario);
                 alert('Usuario actualizado correctamente');
             } else {
@@ -139,8 +147,10 @@
             }
         })
         .catch(error => {
+            if (error.message !== 'Nombre de usuario duplicado') {
             console.error('Error:', error);
             alert('Error de red');
+        }
         });
     });
 

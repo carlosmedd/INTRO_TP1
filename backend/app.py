@@ -209,9 +209,16 @@ def update_user():
     username = data.get('username')
     password = data.get('password')
 
+    # Verificar si el nuevo nombre de usuario ya está en uso
+    existing_user = User.query.filter(User.id != id, User.username == username).first()
+    if existing_user:
+        return jsonify({"success": False, "message": "El nombre de usuario ya está en uso"}), 400
+
+
     user = User.query.filter_by(id=id).first()
     if user:
-        user.username = username
+        if username:
+            user.username = username
         if password:  # Actualiza la contraseña si se proporciona
             user.password = password
         db.session.commit()

@@ -202,6 +202,23 @@ def delete_response():
             "success": True, 
             }), 201
 
+@app.route('/profile', methods=['PUT'])
+def update_user():
+    data = request.json
+    id = data.get('id')
+    username = data.get('username')
+    password = data.get('password')
+
+    user = User.query.filter_by(id=id).first()
+    if user:
+        user.username = username
+        if password:  # Actualiza la contraseña si se proporciona
+            user.password = password
+        db.session.commit()
+        return jsonify({"success": True}), 200
+    else:
+        return jsonify({"success": False, "message": "Usuario no encontrado"}), 404
+
 if __name__ == '__main__':
     db.init_app(app)
     with app.app_context():

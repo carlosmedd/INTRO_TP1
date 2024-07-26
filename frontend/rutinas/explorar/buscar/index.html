@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar rutinas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <div class="container-fluid text-center">
+            <div class="row">
+                <div class="col">
+                    <h1 class="lh-lg">GYMFIT</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+    <hr>
+    <nav>
+        <div class="container text-center">
+            <ul class="nav  nav-underline nav-justified">
+                <li class="nav-item">
+                    <a class="nav-link text-reset" href="http://127.0.0.1:8000/mi_perfil" aria-current="page">Mi perfil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-reset" href="http://127.0.0.1:8000/mi_rutina" aria-current="page">Mi rutina</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="http://127.0.0.1:8000/rutinas" aria-current="page">Rutinas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-reset" href="http://127.0.0.1:8000/comunidad" aria-current="page">Comunidad</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-reset" href="http://127.0.0.1:8000/ejercicios" aria-current="page">Ejercicios</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <hr>
+    <div class="row justify-content-center" style="--bs-gutter-x: 0;">
+        <div class="card col-xl-9 col-lg-10 col-md-10 col-sm-11 col-12 p-0">
+            <div class="card-header text-center">
+                <ul class="nav nav-tabs card-header-tabs">
+                    <li class="nav-item col-6">
+                        <a class="nav-link" href="http://127.0.0.1:8000/rutinas/crear">Crear</a>
+                    </li>
+                    <li class="nav-item col-6">
+                        <a class="nav-link active" aria-current="true">Explorar</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <div class="row text-center">
+                        <div class="col">
+                            <h5 class="card-title">Explorar rutinas</h5>
+                            <p class="card-text">Descubre y guarda rutinas de otros usuarios para seguirlas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3">
+                        </div>
+                        <div class="col-4">
+                            <form class="d-flex" role="search" onsubmit="buscar(event)">
+                                <input name="a_buscar" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                        </div>
+                        <div class="col">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Filtrar:
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href='http://127.0.0.1:8000/rutinas/explorar/buscar?category=nombre1'>Nombre</a></li>
+                                    <li><a class="dropdown-item" href='http://127.0.0.1:8000/rutinas/explorar/buscar?category=usuario1'>Usuario</a></li>
+                                    <li><a class="dropdown-item" href='http://127.0.0.1:8000/rutinas/explorar/buscar?category=fecha1'>Fecha de creacion</a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Orden:
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" id="ascendente">Ascendente</a></li>
+                                    <li><a class="dropdown-item" id="descendente">Descendente</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="col">
+                        </div>
+                    </div>
+                </div>
+                <div class="container p-3" id="listar_rutinas">
+                        
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        const dayNames = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+        const params = new URLSearchParams(window.location.search);
+        
+        const orden_1 = document.getElementById("ascendente")
+        const orden_2 = document.getElementById("descendente")
+        function data(content){
+            const container = document.getElementById("listar_rutinas");
+            tabla = ``;
+            for (let index = 0; index < content.length; index++){
+                
+                inicio = `
+                <hr class="border border-black border-2" >
+                <div class="row text-center">
+                    <div class="col-1">
+                    </div>
+                    <div class="col">
+                        <a class="h5" href="http://127.0.0.1:8000/rutinas/explorar/rutina?id=${content[index].id}">${content[index].name_rutine}</a>
+                    </div>
+                    <div class="col-1">
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-1">
+                    </div>
+                    <div class="col">
+                        <p>Descripcion: ${content[index].description}</p>
+                    </div>
+                    <div class="col-2">
+                        <p>Creador: ${content[index].name}</p>
+                    </div>
+                    <div class="col-2">
+                        <p>Fecha: ${content[index].date}</p>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col ">
+                        <table class="table align-middle table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Lunes</th>
+                                    <th scope="col">Martes</th>
+                                    <th scope="col">Miercoles</th>
+                                    <th scope="col">Jueves</th>
+                                    <th scope="col">Viernes</th>
+                                    <th scope="col">Sabado</th>
+                                    <th scope="col">Domingo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" >Ejercicios</th>`
+                for (let i=0; i < dayNames.length; i++){
+                    dia = `
+                                        <td>`
+                    if (dayNames[i] == "Lunes"){
+                        if (content[index].Lunes.length != 0){
+                            for(let j=0; j<content[index].Lunes.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Lunes[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Martes"){
+                        if (content[index].Martes.length != 0){
+                            for(let j=0; j<content[index].Martes.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Martes[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Miercoles"){
+                        if (content[index].Miercoles.length != 0){
+                            for(let j=0; j<content[index].Miercoles.length; j++){
+                                ejercicios = `              
+                                            <p>${content[index].Miercoles[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Jueves"){
+                        if (content[index].Jueves.length != 0){
+                            for(let j=0; j<content[index].Jueves.length; j++){
+                                ejercicios = `                        <p>${content[index].Jueves[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Viernes"){
+                        if (content[index].Viernes.length != 0){
+                            for(let j=0; j<content[index].Viernes.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Viernes[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Sabado"){
+                        if (content[index].Sabado.length != 0){
+                            for(let j=0; j<content[index].Sabado.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Sabado[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Domingo"){
+                        if (content[index].Domingo.length != 0){
+                            for(let j=0; j<content[index].Domingo.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Domingo[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    cierre_dia = `
+                                        </td>`
+                    dia = dia + cierre_dia
+                    inicio = inicio + dia
+                }
+                final = `
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                `
+                inicio = inicio + final
+                tabla = tabla + inicio
+            }
+            container.innerHTML = tabla
+        }
+
+        
+        for (const key of params.keys()) {
+            filtro = params.get(key)
+            filtro = filtro.slice(0,filtro.length - 1)
+            orden_1.setAttribute("href",`http://127.0.0.1:8000/rutinas/explorar/buscar?category=${filtro}1`)
+            orden_2.setAttribute("href",`http://127.0.0.1:8000/rutinas/explorar/buscar?category=${filtro}2`)
+            if (key == "name"){
+                fetch(`http://localhost:5000/rutines/search/${params.get(key)}`)
+                .then(response => response.json())
+                .then(data)
+                .catch(error => console.error('El servidor fallo:', error));
+            }else{
+                fetch(`http://localhost:5000/rutines/filter/${params.get(key)}`)
+                .then(response => response.json())
+                .then(data)
+                .catch(error => console.error('El servidor fallo:', error));
+            }
+        }
+
+        function buscar(event){
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const que_buscar = formData.get("a_buscar");
+            window.location.replace(`http://127.0.0.1:8000/rutinas/explorar/buscar?name=${que_buscar}`);
+        }
+
+    </script>
+</body>
+
+</html>

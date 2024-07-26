@@ -1,0 +1,137 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa; /* Color de fondo gris claro */
+    color: #212529; /* Color de texto oscuro */
+    padding-top: 20px;
+}
+  
+.container-info p{
+    border: 1px solid #ccc; 
+    padding: 10px; 
+    width: 600px; 
+    display: flex;
+}
+
+.nombreCompleto-input {
+    display: flex;
+    align-items: center;
+}
+
+.usuario-input {
+    display: flex;
+    align-items: center;
+}
+.password-input {
+    display: flex;
+    align-items: center;
+}
+
+.container-info i {
+    margin-left: 10px;
+    position: relative;
+    top: -5px;
+    cursor: pointer;
+    
+}
+
+ /* ALERTA USUARIO YA EXISTENTE */
+
+.alert {
+    background-color: orangered;
+    padding: 20px 40px;
+    min-width: 420px;
+    position: absolute;
+    right: 0px;
+    top: 460px;
+    border-radius: 4px;
+    border-left: 8px solid rgb(161, 55, 16);
+}
+
+.alert.show{
+    animation: show_slide 1s ease forwards;
+}
+@keyframes show_slide {
+    0%{
+        transform: translateX(100%);
+    }
+    40%{
+        transform: translateX(-10%);
+    }
+    80%{
+        transform: translateX(0%);
+    }
+    100%{
+        transform: translateX(0%);
+    }
+}
+
+.alert.hide{
+    animation: hide_slide 1s ease forwards;
+}
+@keyframes hide_slide {
+    0%{
+        transform: translateX(20%);
+    }
+    40%{
+        transform: translateX(0%);
+    }
+    80%{
+        transform: translateX(-10%);
+    }
+    100%{
+        transform: translateX(100%);
+    }
+}
+
+.alert .bi-exclamation-circle-fill{
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(161, 55, 16);
+    font-size: 20px;
+}
+
+.alert .msg{
+    padding: 0 5px;
+    font-size: 16px;
+    color: rgb(161, 55, 16);
+}
+
+.alert .close-btn{
+    position: absolute;
+    right: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgb(161, 55, 16);
+    padding: 20px 10px;
+    cursor: pointer;
+}
+
+.close-btn .bi-x-lg{
+    color: orangered;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+ /* BOTON CERRAR SESION */
+
+.btn-cerrar-sesion {
+    background-color: #ff1100; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 10px 20px; /* Espaciado interior */
+    text-align: center; /* Alineación del texto */
+    text-decoration: none; /* Sin subrayado */
+    display: inline-block; /* Mostrar como bloque en línea */
+    font-size: 16px; /* Tamaño del texto */
+    margin: 0px; /* Margen exterior */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    border-radius: 5px; /* Bordes redondeados */
+}
+  
+.btn-cerrar-sesion:hover {
+    color: #ff1100;
+    background-color: transparent;
+    border: 1px solid #ff1100;
+}  

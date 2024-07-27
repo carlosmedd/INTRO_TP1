@@ -201,6 +201,401 @@ def delete_response():
             "success": True, 
             }), 201
 
+@app.route('/rutines')
+def get_rutines():
+    try:
+        rutinas = Rutine.query.all()
+        rutinas_data = []
+        for rutina in rutinas:
+
+            user = User.query.filter_by(id = rutina.user_id).first()
+            rutina_data = {
+                "id": rutina.id,
+                "description": rutina.description, 
+                "name_rutine": rutina.name,
+                "name": user.nickname,
+                "date": rutina.created_at.strftime("%x"),
+                "Lunes": [],
+                "Martes": [],
+                "Miercoles": [],
+                "Jueves": [],
+                "Viernes": [],
+                "Sabado": [],
+                "Domingo": []
+            }
+            ejercicios = Exercise_user.query.filter_by(rutine_id = rutina.id).all()
+            for ejercicio in ejercicios:
+                if (ejercicio.day == 0):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Lunes'].append(ejercicio_day_data)
+                if (ejercicio.day == 1):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Martes'].append(ejercicio_day_data)
+                if (ejercicio.day == 2):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Miercoles'].append(ejercicio_day_data)
+                if (ejercicio.day == 3):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Jueves'].append(ejercicio_day_data)
+                if (ejercicio.day == 4):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Viernes'].append(ejercicio_day_data)
+                if (ejercicio.day == 5):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Sabado'].append(ejercicio_day_data)
+                if (ejercicio.day == 6):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Domingo'].append(ejercicio_day_data)
+
+            rutinas_data.append(rutina_data)
+        return jsonify(rutinas_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/rutines/search/<nombre>')
+def get_rutines_name(nombre):
+    try:
+        rutinas = Rutine.query.filter(Rutine.name.startswith(nombre)).all()
+        rutinas_data = []
+        for rutina in rutinas:
+            user = User.query.filter_by(id = rutina.user_id).first()
+            rutina_data = {
+                "id": rutina.id,
+                "description": rutina.description, 
+                "name_rutine": rutina.name,
+                "name": user.nickname,
+                "date": rutina.created_at.strftime("%x"),
+                "Lunes": [],
+                "Martes": [],
+                "Miercoles": [],
+                "Jueves": [],
+                "Viernes": [],
+                "Sabado": [],
+                "Domingo": []
+            }
+            ejercicios = Exercise_user.query.filter_by(rutine_id = rutina.id).all()
+            for ejercicio in ejercicios:
+                if (ejercicio.day == 0):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Lunes'].append(ejercicio_day_data)
+                if (ejercicio.day == 1):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Martes'].append(ejercicio_day_data)
+                if (ejercicio.day == 2):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Miercoles'].append(ejercicio_day_data)
+                if (ejercicio.day == 3):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Jueves'].append(ejercicio_day_data)
+                if (ejercicio.day == 4):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Viernes'].append(ejercicio_day_data)
+                if (ejercicio.day == 5):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Sabado'].append(ejercicio_day_data)
+                if (ejercicio.day == 6):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Domingo'].append(ejercicio_day_data)
+
+            rutinas_data.append(rutina_data)
+        return jsonify(rutinas_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/rutines/filter/<filtro>')
+def get_rutines_category(filtro):
+    try:
+        if (filtro == "nombre1"):
+            rutinas = Rutine.query.order_by(Rutine.name).all()
+        if (filtro == "usuario1"):
+            rutinas = Rutine.query.order_by(Rutine.user_id).all()
+        if (filtro == "fecha1"):
+            rutinas = Rutine.query.order_by(Rutine.created_at).all()
+        if (filtro == "nombre2"):
+            rutinas = Rutine.query.order_by(Rutine.name.desc()).all()
+        if (filtro == "usuario2"):
+            rutinas = Rutine.query.order_by(Rutine.user_id.desc()).all()
+        if (filtro == "fecha2"):
+            rutinas = Rutine.query.order_by(Rutine.created_at.desc()).all()
+        
+        rutinas_data = []
+        for rutina in rutinas:
+            user = User.query.filter_by(id = rutina.user_id).first()
+            rutina_data = {
+                "id": rutina.id,
+                "description": rutina.description, 
+                "name_rutine": rutina.name,
+                "name": user.nickname,
+                "date": rutina.created_at.strftime("%x"),
+                "Lunes": [],
+                "Martes": [],
+                "Miercoles": [],
+                "Jueves": [],
+                "Viernes": [],
+                "Sabado": [],
+                "Domingo": []
+            }
+            ejercicios = Exercise_user.query.filter_by(rutine_id = rutina.id).all()
+            for ejercicio in ejercicios:
+                if (ejercicio.day == 0):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Lunes'].append(ejercicio_day_data)
+                if (ejercicio.day == 1):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Martes'].append(ejercicio_day_data)
+                if (ejercicio.day == 2):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Miercoles'].append(ejercicio_day_data)
+                if (ejercicio.day == 3):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Jueves'].append(ejercicio_day_data)
+                if (ejercicio.day == 4):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Viernes'].append(ejercicio_day_data)
+                if (ejercicio.day == 5):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Sabado'].append(ejercicio_day_data)
+                if (ejercicio.day == 6):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Domingo'].append(ejercicio_day_data)
+
+            rutinas_data.append(rutina_data)
+        return jsonify(rutinas_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/rutine/<id>')
+def get_rutine_id (id):
+    try:
+        rutina = Rutine.query.filter_by(id=id).first()
+        user = User.query.filter_by(id = rutina.user_id).first()
+        rutina_data = {
+            "id": rutina.id,
+            "description": rutina.description, 
+            "name_rutine": rutina.name,
+            "name": user.nickname,
+            "date": rutina.created_at.strftime("%x"),
+            "lunes": [],
+            "martes": [],
+            "miercoles": [],
+            "jueves": [],
+            "viernes": [],
+            "sabado": [],
+            "domingo": []
+        }
+        ejercicios = Exercise_user.query.filter_by(rutine_id = rutina.id).all()
+        for ejercicio in ejercicios:
+            if (ejercicio.day == 0):
+                base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                ejercicio_day_data = {
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
+                }
+                rutina_data['lunes'].append(ejercicio_day_data)
+            if (ejercicio.day == 1):
+                base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                ejercicio_day_data = {
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
+                }
+                rutina_data['martes'].append(ejercicio_day_data)
+            if (ejercicio.day == 2):
+                base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                ejercicio_day_data = {
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
+                }
+                rutina_data['miercoles'].append(ejercicio_day_data)
+            if (ejercicio.day == 3):
+                base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                ejercicio_day_data = {
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
+                }
+                rutina_data['jueves'].append(ejercicio_day_data)
+            if (ejercicio.day == 4):
+                base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                ejercicio_day_data = {
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
+                }
+                rutina_data['viernes'].append(ejercicio_day_data)
+            if (ejercicio.day == 5):
+                base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                ejercicio_day_data = {
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
+                }
+                rutina_data['sabado'].append(ejercicio_day_data)
+            if (ejercicio.day == 6):
+                base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                ejercicio_day_data = {
+                    "exercise": base_ejercicio.name,
+                    "img1": base_ejercicio.img1,
+                    "img2": base_ejercicio.img2,
+                    "peso": ejercicio.weight,
+                    "sets": ejercicio.sets,
+                    "reps": ejercicio.repetition,
+                    "rest": ejercicio.rest
+                }
+                rutina_data['domingo'].append(ejercicio_day_data)
+
+        return jsonify(rutina_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
+@app.route('/rutines', methods=['POST'])
+def create_rutine():
+    i = 0
+    data = request.json
+    info = data.get('listaEjercicios')
+    id_user = data.get('id')
+    descripcion = data.get('descripcionRutina')
+    nombre_rutina = data.get('nombreRutina')
+    new_rutine = Rutine(description = descripcion ,name = nombre_rutina, user_id = id_user)
+    db.session.add(new_rutine)
+    db.session.commit()
+    for day in info:
+        dia = info.get(day)
+        if (dia[0] != -1):
+            for ejercicio in dia:
+                id = ejercicio.get('id')
+                nombre = ejercicio.get('nombre')
+                peso = ejercicio.get('peso')
+                series = ejercicio.get('series')
+                repeticiones = ejercicio.get('repeticiones')
+                descanso = ejercicio.get('descanso')
+                new_exercise_user = Exercise_user(rest = descanso, user_id = id_user, sets=series, weight=peso, repetition=repeticiones, day=i, exercises_id=id, rutine_id=new_rutine.id)
+                db.session.add(new_exercise_user)
+                db.session.commit()
+        i = i + 1
+    return jsonify({
+            "success": True, 
+            }), 201
+
+@app.route('/user_exercises')
+def get_exercises_by_user():
+    try:
+        exercises = Exercise_user.query.all()
+        exercises_data = []
+        for exercise in exercises:
+            ejercicio = Exercise.query.filter_by(id = exercise.exercises_id).first()
+            dia = ["Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"]                
+            exercise_data = {
+                "id": exercise.id,
+                "user_id": exercise.user_id, 
+                "name": ejercicio.name,
+                "img1": ejercicio.img1,
+                "img2": ejercicio.img2,
+                "weight": exercise.weight,
+                "sets": exercise.sets,
+                "repetition": exercise.repetition,
+                "day": dia[exercise.days],
+                "rutine_id": exercise.rutine_id
+            }
+            exercises_data.append(exercise_data)
+        return jsonify(exercises_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
+
 @app.route('/profile', methods=['PUT'])
 def update_user():
     data = request.json

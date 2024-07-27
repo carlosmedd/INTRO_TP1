@@ -9,10 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     nickname = db.Column(db.String(255), nullable=False)
-    rutines =  db.relationship("Rutine")
-    exercises = db.relationship("Exercise_user")
-    comments = db.relationship("Comment")
-    responses = db.relationship("Response")
+    active_rutine_id = db.Column(db.Integer, db.ForeignKey('rutinas.id'))
 
 class Rutine(db.Model):
     __tablename__ = 'rutinas'

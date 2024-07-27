@@ -1,12 +1,5 @@
-let id_rutina = null;
-
 function cargarDatosRutina (content) {
     console.log(content);
-    id_rutina = content.id;
-
-    document.getElementById("rutina-titulo").append(content.name_rutine);
-    document.getElementById("rutina-descripcion").append(content.description);
-    document.getElementById("rutina-meta-data").append(`Creado por ${content.name} el ${formatearFecha(content.date)}`);
 
     const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
 
@@ -64,10 +57,8 @@ function createCarousels(content) {
 
         if (content[dia].length === 0) {
             carouselInner.innerHTML = `
-                <div class="p-5 m-1">
-                    <div class="m-1 p-1">
-                        <h1 class="text-center p-5 m-5">Dia de descanso<h1>
-                    </div>
+                <div>
+                    <h1 class="text-center p-5 m-5">Dia de descanso<h1>
                 </div>
             `;
         }
@@ -79,7 +70,7 @@ function createCarouselItem (ejercicios, i) {
     carouselItem.setAttribute("class", "carousel-item");
 
     const rowElement = document.createElement("div");
-    rowElement.setAttribute("class", "row row-cols-3")
+    rowElement.setAttribute("class", "row row-cols-3 ms-4")
     carouselItem.append(rowElement);
 
     ejercicios.forEach(ejercicio => {
@@ -113,19 +104,37 @@ function createCarouselItem (ejercicios, i) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    console.log(localStorage);
 
-    // --------- peticion al backend ---------
+    const date = new Date();
+    const day = date.getDay();
+    const dayNames = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+    const dia = document.getElementById("dia");
+    dia.innerText = dayNames[day];
 
-    const parametros = new URLSearchParams(window.location.search)
-    const id_parametro = parametros.get("id");
+    const id = localStorage.getItem('id');
+    const nickname = localStorage.getItem('nickname');
+    if (id) {
+        document.getElementById('saludo').innerText = `Bienvenido ${nickname}`;
+    } else {
+        window.location.href = 'http://127.0.0.1:8000/register';
+    }
 
-    if (id_parametro === null)
-        window.location.href = "http://127.0.0.1:8000/rutinas/explorar/";
+    // ---------- peticion al backend ----------
+    const rutinaActiva = localStorage.active_rutine_id;
+    const mensajeNoRutina = document.getElementById("no-rutina");
+    const containerRutina = document.getElementById("container-rutina");
 
-    fetch(`http://localhost:5000/rutine/${id_parametro}`)
-    .then(response => response.json())
-    .then(content => cargarDatosRutina(content))
-    .catch(error => console.error('El servidor fallo:', error));
+    if (rutinaActiva == "null") {
+        mensajeNoRutina.removeAttribute("hidden");
+    } else {
+        containerRutina.removeAttribute("hidden");
+
+        fetch(`http://localhost:5000/rutine/${localStorage.active_rutine_id}`)
+        .then(response => response.json())
+        .then(content => cargarDatosRutina(content))
+        .catch(error => console.error('El servidor fallo:', error));
+    }
 
     // --------- enlace entre botones y caruseles segun dia ---------
 
@@ -144,42 +153,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 showCarousel(`carousel-${this.id.split('-')[1]}`);
             }
         });
-    });
-    // Mostrar el contenido del botón seleccionado inicialmente
-    showCarousel('carousel-lunes');
-
-    // --------- boton para activar rutina ---------
-    
-    document.getElementById("btn-activar-rutina").addEventListener("click", function() {
-        const rutinaActiva = localStorage.active_rutine_id;
-
-        if (rutinaActiva == id_rutina) 
-            alert("La rutina ya se encuentra activa");
-
-        else {
-            const id_usuario = localStorage.id;
-
-            fetch('http://localhost:5000/active_rutine', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id_usuario, id_rutina }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    localStorage.setItem('active_rutine_id', id_rutina);
-                    
-                    console.log(localStorage);
-                    alert('Rutina activada existosamente. Vuelve a "Mi rutina" para verlo.');
-    
-                } else {
-                    alert("No se pudo activar la rutina.");
-                }
-            })
-            .catch(error => console.error('El servidor fallo:', error));
+        if (btn.id.split("-")[1] == dayNames[day].toLowerCase()) {
+            btn.setAttribute("checked", "");
         }
     });
-
+    // Mostrar el contenido del botón seleccionado inicialmente
+    showCarousel(`carousel-${dayNames[day].toLowerCase()}`);
 });

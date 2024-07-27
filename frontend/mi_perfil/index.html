@@ -97,7 +97,14 @@
 
         <div class="container-rutinas">
             <h3>RUTINAS DEL USUARIO</h3>
-
+            <div id="rutinas-lista">
+                <!-- Aquí se mostrarán las rutinas -->
+                <div id="noRutinas" class="d-none">
+                    <p>No hay rutinas creadas por el usuario, usted puede crear una en <a href="http://127.0.0.1:8000/rutinas" class="link">RUTINAS</a></p>
+                </div>
+                <div class="container p-3" id="listar_rutinas">                    
+                </div>
+            </div>
         </div>
 
 
@@ -105,157 +112,224 @@
         </div>
     </div>
 
-
-
     <script>
             
-            //Datos de Tabla User
-        document.addEventListener('DOMContentLoaded' , function() {
+                //Datos de Tabla User
+            document.addEventListener('DOMContentLoaded', function() {
+                const id = localStorage.getItem('id');
+                const nickname = localStorage.getItem('nickname');
+                const username = localStorage.getItem('username');
+                const password = localStorage.getItem('password');
+            
+                if (id) {
+                    document.getElementById('usuario').innerText = username;
+                    document.getElementById('nombre_completo').innerText = nickname;
+                    document.getElementById('password').innerText = password;
+                } else {
+                    window.location.href = 'http://127.0.0.1:8000/register';   
+                }
+                
+                    // Guardar cambios en el usuario
+                document.getElementById('guardarUsuario').addEventListener('click', function() {
+                    const nuevoUsuario = document.getElementById('usuario').innerText.trim();
+                    const data = { id: id, username: nuevoUsuario };
+            
+                    fetch('http://127.0.0.1:5000/profile', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        if (response.status === 400) {
+                            showAlert('El nombre de usuario ya está en uso. Por favor, elija otro.');
+                            throw new Error('Nombre de usuario duplicado');
+                        } else {
+                            return response.json();
+                        }
+                    })
+                    .then(data => {
+                        if (data && data.success) {
+                            localStorage.setItem('username', nuevoUsuario);
+                            showAlertUser('Nombre de Usuario actualizado correctamente!');
+                        } else {
+                            alert('Error al actualizar el usuario');
+                        }
+                    })
+                    .catch(error => {
+                        if (error.message !== 'Nombre de usuario duplicado') {
+                            console.error('Error:', error);
+                            showAlert('El nombre de usuario ya está en uso. Por favor, elija otro.');
+                        }
+                    });
+                });
+            
+                // Guardar cambios en la contraseña
+            document.getElementById('guardarContraseña').addEventListener('click', function() {
+                const nuevaContraseña = document.getElementById('password').innerText.trim();
+                const data = { id: id, password: nuevaContraseña };
         
-        const id = localStorage.getItem('id');
-        const nickname = localStorage.getItem('nickname');
-        const username= localStorage.getItem('username');
-        const password= localStorage.getItem('password');             
-        if (id) {
-            document.getElementById('usuario').innerText = `${username}`;
-        } else {
-            window.location.href = 'http://127.0.0.1:8000/register';   
-        }
-        if (id) {
-            document.getElementById('nombre_completo').innerText = `${nickname}`;
-        } else {
-            window.location.href = 'http://127.0.0.1:8000/register';   
-        }if (id) {
-            document.getElementById('password').innerText = `${password}`;
-        } else {
-            window.location.href = 'http://127.0.0.1:8000/register';   
-        }
-
-            // Guardar cambios en el usuario
-        document.getElementById('guardarUsuario').addEventListener('click', function() {
-        const nuevoUsuario = document.getElementById('usuario').innerText.trim();  // Obtiene el contenido del <p> y elimina espacios en blanco
-
-        const data = {
-            id: id,
-            username: nuevoUsuario,
-        };
-
-        fetch('http://127.0.0.1:5000/profile', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            if (response.status === 400) {
-                // Si el nombre de usuario ya está en uso, muestra una alerta
-                showAlert('El nombre de usuario ya está en uso. Por favor, elija otro.');
-                throw new Error('Nombre de usuario duplicado');
-            } else {
-                return response.json()
+                fetch('http://127.0.0.1:5000/profile', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        localStorage.setItem('password', nuevaContraseña);
+                        showAlertPassword('Contraseña actualizada correctamente!');
+                    } else {
+                        alert('Error al actualizar la contraseña');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error de red');
+                });
+            });
+            
+                // TABLAS USUARIO
+            const dayNames = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+            fetch(`http://localhost:5000/rutinesUser?user_id=${id}`)
+            .then(response => response.json())
+            .then(content => {
+                const container = document.getElementById("listar_rutinas");
+                const noRutinas = document.getElementById("noRutinas");
+                let tabla = ``;
+                if (content.length === 0) {
+                    noRutinas.classList.remove('d-none');
+                } else {
+                    noRutinas.classList.add('d-none');
+                    for (let index = 0; index < content.length; index++){
+                    let inicio = `
+                    <hr class="border border-black border-2" >
+                    <div class="row text-center">
+                        <div class="col-1">
+                        </div>
+                        <div class="col">
+                            <a class="h5" href="http://127.0.0.1:8000/rutinas/explorar/rutina?id=${content[index].id}">${content[index].name_rutine}</a>
+                        </div>
+                        <div class="col-1">
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-1">
+                        </div>
+                        <div class="col">
+                            <p>Descripcion: ${content[index].description}</p>
+                        </div>
+                        <div class="col-2">
+                            <p>Creador: ${content[index].name}</p>
+                        </div>
+                        <div class="col-2">
+                            <p>Fecha: ${content[index].date}</p>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col ">
+                            <table class="table align-middle table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Lunes</th>
+                                        <th scope="col">Martes</th>
+                                        <th scope="col">Miercoles</th>
+                                        <th scope="col">Jueves</th>
+                                        <th scope="col">Viernes</th>
+                                        <th scope="col">Sabado</th>
+                                        <th scope="col">Domingo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row" >Ejercicios</th>`
+                    for (let i = 0; i < dayNames.length; i++){
+                        let dia = `<td>`
+                        if (dayNames[i] === "Lunes"){
+                            if (content[index].Lunes.length !== 0){
+                                for (let j = 0; j < content[index].Lunes.length; j++){
+                                    let ejercicios = `<p>${content[index].Lunes[j].exercise}</p>`   
+                                    dia += ejercicios;
+                                }
+                            } else {
+                                let ejercicios = `<p>Descanso</p>`
+                                dia += ejercicios;
+                            }
+                        }
+                            // Repetir para los demás días...
+                            //...
+                        dia += `</td>`;
+                        inicio += dia;
+                    }
+                    let final = `
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    `;
+                    inicio += final;
+                    tabla += inicio;
+                }
+                container.innerHTML = tabla;
             }
-        })
-        .then(data => {
-            if (data && data.success) {
-                localStorage.setItem('username', nuevoUsuario);
-                showAlertUser('Nombre de Usuario actualizado correctamente!');
-            } else {
-                alert('Error al actualizar el usuario');
-            }
-        })
-        .catch(error => {
-            if (error.message !== 'Nombre de usuario duplicado') {
-            console.error('Error:', error);
-            showAlert('El nombre de usuario ya está en uso. Por favor, elija otro.');
-        }
-        });
-
-            // Guardar cambios en la contraseña
-        document.getElementById('guardarContraseña').addEventListener('click', function() {
-        const nuevaContraseña = document.getElementById('password').innerText.trim();  // Obtiene el contenido del <p> y elimina espacios en blanco
-
-        const data = {
-            id: id,
-            password: nuevaContraseña
-        };
-
-        fetch('http://127.0.0.1:5000/profile', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                localStorage.setItem('password', nuevaContraseña);
-                showAlertPassword('Contraseña actualizada correctamente!');
-            } else {
-                alert('Error al actualizar la contraseña');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error de red');
-        });
-        }); 
-
-            // Función para mostrar la alerta Usuario ya en uso
-        function showAlert(message) {
+            })
+        
+                .catch(error => console.error('El servidor fallo:', error));
+                    
+            // ALERTAS // 
+                // Función para mostrar la alerta Usuario ya en uso
+            function showAlert(message) {
                 const alertContainer = document.getElementById('alertContainer');
                 const alertMessage = document.getElementById('alertMessage');
                 alertMessage.textContent = message;
                 alertContainer.classList.remove('d-none');
             }
-
-            // Cerrar alerta al hacer clic en el botón de cerrar (Nombre de usuario ya en uso)
-        document.getElementById('closeAlert').addEventListener('click', function() {
+        
+                // Cerrar alerta al hacer clic en el botón de cerrar (Nombre de usuario ya en uso)
+            document.getElementById('closeAlert').addEventListener('click', function() {
                 const alertContainer = document.getElementById('alertContainer');
                 alertContainer.classList.add('d-none');
             });
-
-            // Función para mostrar la alerta Usuario actualizado
-        function showAlertUser(message) {
+        
+                // Función para mostrar la alerta Usuario actualizado
+            function showAlertUser(message) {
                 const alertContainerUser = document.getElementById('alertContainerUser');
                 const alertMessage = document.getElementById('alertMessageUser');
-                alertMessageUser.textContent = message;
+                alertMessage.textContent = message;
                 alertContainerUser.classList.remove('d-none');
             }
-            
-            // Cerrar alerta al hacer clic en el botón de cerrar (Usuario actualizado)
-        document.getElementById('closeAlertUser').addEventListener('click', function() {
-                const alertContainer = document.getElementById('alertContainerUser');
-                alertContainer.classList.add('d-none');
+        
+                // Cerrar alerta al hacer clic en el botón de cerrar (Usuario actualizado)
+            document.getElementById('closeAlertUser').addEventListener('click', function() {
+                const alertContainerUser = document.getElementById('alertContainerUser');
+                alertContainerUser.classList.add('d-none');
             });
-
-            // Función para mostrar la alerta Contraseña actualizado
-        function showAlertPassword(message) {
+        
+                // Función para mostrar la alerta Contraseña actualizado
+            function showAlertPassword(message) {
                 const alertContainerPassword = document.getElementById('alertContainerPassword');
                 const alertMessage = document.getElementById('alertMessagePassword');
-                alertMessagePassword.textContent = message;
+                alertMessage.textContent = message;
                 alertContainerPassword.classList.remove('d-none');
             }
-            
-            // Cerrar alerta al hacer clic en el botón de cerrar (Contraseña actualizado)
-        document.getElementById('closeAlertPassword').addEventListener('click', function() {
-                const alertContainer = document.getElementById('alertContainerPassword');
-                alertContainer.classList.add('d-none');
-            });
-
         
-            //Boton Cerrar Sesion
-        document.getElementById('logoutButton').addEventListener('click', function() {
-            localStorage.removeItem('id');
-            localStorage.removeItem('nickname');
-            localStorage.removeItem('username');
-            localStorage.removeItem('password');
-            window.location.href = 'http://127.0.0.1:8000/';
-        });
-    });
-    });
-
-    </script>
+                // Cerrar alerta al hacer clic en el botón de cerrar (Contraseña actualizado)
+            document.getElementById('closeAlertPassword').addEventListener('click', function() {
+                const alertContainerPassword = document.getElementById('alertContainerPassword');
+                alertContainerPassword.classList.add('d-none');
+            });
+                   
+                //Boton Cerrar Sesion
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('id');
+                localStorage.removeItem('nickname');
+                localStorage.removeItem('username');
+                localStorage.removeItem('password');
+                window.location.href = 'http://127.0.0.1:8000/';
+                });
+            });
+        
+        </script>
 </body>
 </html>   

@@ -8,7 +8,7 @@ CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://gabriel:140703@localhost:5432/users_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+ 
 @app.route('/login', methods=['POST'])
 def login():
     data = request.json
@@ -619,6 +619,86 @@ def update_user():
         return jsonify({"success": True}), 200
     else:
         return jsonify({"success": False, "message": "Usuario no encontrado"}), 404
+
+@app.route('/rutinesUser', methods=['GET'])
+def get_rutines_user():
+    try:
+        # Obtener el ID del usuario de los parámetros de consulta
+        user_id = request.args.get('user_id')
+
+        if not user_id:
+            return jsonify({'message': 'ID de usuario requerido'}), 400
+
+        # Obtener las rutinas del usuario actual
+        rutinas = Rutine.query.filter_by(user_id=user_id).all()
+        rutinas_data = []
+        for rutina in rutinas:
+
+            user = User.query.filter_by(id = rutina.user_id).first()
+            rutina_data = {
+                "id": rutina.id,
+                "description": rutina.description, 
+                "name_rutine": rutina.name,
+                "name": user.nickname,
+                "date": rutina.created_at.strftime("%x"),
+                "Lunes": [],
+                "Martes": [],
+                "Miercoles": [],
+                "Jueves": [],
+                "Viernes": [],
+                "Sabado": [],
+                "Domingo": []
+            }
+            ejercicios = Exercise_user.query.filter_by(rutine_id = rutina.id).all()
+            for ejercicio in ejercicios:
+                if (ejercicio.day == 0):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Lunes'].append(ejercicio_day_data)
+                if (ejercicio.day == 1):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Martes'].append(ejercicio_day_data)
+                if (ejercicio.day == 2):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Miercoles'].append(ejercicio_day_data)
+                if (ejercicio.day == 3):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Jueves'].append(ejercicio_day_data)
+                if (ejercicio.day == 4):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Viernes'].append(ejercicio_day_data)
+                if (ejercicio.day == 5):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Sabado'].append(ejercicio_day_data)
+                if (ejercicio.day == 6):
+                    base_ejercicio = Exercise.query.filter_by(id = ejercicio.exercises_id).first()
+                    ejercicio_day_data = {
+                        "exercise": base_ejercicio.name
+                    }
+                    rutina_data['Domingo'].append(ejercicio_day_data)
+
+            rutinas_data.append(rutina_data)
+        return jsonify(rutinas_data)
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message': 'Internal server error'}), 500
 
 if __name__ == '__main__':
     db.init_app(app)

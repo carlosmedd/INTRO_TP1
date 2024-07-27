@@ -17,7 +17,8 @@ class User(db.Model):
 class Rutine(db.Model):
     __tablename__ = 'rutinas'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False, default=f"Rutina {id}")
+    description = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('usuarios.id')) 
     created_at = db.Column(db.DateTime, default=datetime.datetime.now())
 
@@ -29,7 +30,8 @@ class Exercise_user(db.Model):
     weight = db.Column(db.Integer, nullable=False, default=0)
     sets = db.Column(db.Integer, nullable=False, default=0)
     repetition = db.Column(db.Integer, nullable=False, default=0)
-    days = db.Column(db.Integer, nullable=False)
+    day = db.Column(db.Integer, nullable=False)
+    rest = db.Column(db.Integer, nullable=False)
     rutine_id = db.Column(db.Integer, db.ForeignKey('rutinas.id'))
 
 class Exercise(db.Model):

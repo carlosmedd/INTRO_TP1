@@ -13,6 +13,7 @@ function authenticateUser(username, password) {
                 localStorage.setItem('nickname', data.nickname);
                 localStorage.setItem('username', data.username);
                 localStorage.setItem('password', data.password);
+                localStorage.setItem('active_rutine_id', data.active_rutine_id);
                 window.location.href = 'http://127.0.0.1:8000/mi_rutina';
             } else {
                 const alert = document.getElementById('alert');

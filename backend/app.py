@@ -23,7 +23,8 @@ def login():
             "id": user.id,
             "nickname": user.nickname,
             "username": user.username,
-            "password": user.password
+            "password": user.password,
+            "active_rutine_id": user.active_rutine_id
             }), 200
     else:
         return jsonify({"success": False, "message": "Credenciales inválidas"}), 401 
@@ -699,6 +700,22 @@ def get_rutines_user():
     except Exception as error:
         print('Error', error)
         return jsonify({'message': 'Internal server error'}), 500
+    
+@app.route('/active_rutine', methods=['PUT'])
+def change_active_rutine_by_user():
+    data = request.json
+    id_user = data.get('id_usuario')
+    rutine_id = data.get('id_rutina')
+
+    user = User.query.filter_by(id = id_user).first()
+
+    if (user):
+        user.active_rutine_id = rutine_id
+        db.session.commit()
+        return jsonify({ "success": True }), 200
+    
+    else:
+        return jsonify({ "success": False, "message": "Usuario no encontrado" }), 404
 
 if __name__ == '__main__':
     db.init_app(app)

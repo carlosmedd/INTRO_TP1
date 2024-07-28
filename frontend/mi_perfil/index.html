@@ -50,7 +50,7 @@
         </div>
         
         <div class="container-info">
-            <h3>INFORMACIÓN BÁSICA DEL USUARIO</h3>
+            <h3><u>MI INFORMACION</u></h3>
             <div class="nombre">
                 <label for="nombreCompleto">Nombre o Apodo</label>
                 <div class="nombreCompleto-input">
@@ -92,23 +92,21 @@
                     <span class="bi bi-x-lg"></span>
                 </span>
             </div>
-            
+            <div class="mb-4">
+                <button id="logoutButton" class="btn-cerrar-sesion">Cerrar Sesión</button>
+            </div>
         </div>
 
         <div class="container-rutinas">
-            <h3>RUTINAS DEL USUARIO</h3>
+            <h3><u>MIS RUTINAS</u></h3>
             <div id="rutinas-lista">
                 <!-- Aquí se mostrarán las rutinas -->
                 <div id="noRutinas" class="d-none">
-                    <p>No hay rutinas creadas por el usuario, usted puede crear una en <a href="http://127.0.0.1:8000/rutinas" class="link">RUTINAS</a></p>
+                    <p>No tienes ninguna rutina creada. Puedes crear una en <a href="http://127.0.0.1:8000/rutinas" class="link">rutinas</a>.</p>
                 </div>
                 <div class="container p-3" id="listar_rutinas">                    
                 </div>
             </div>
-        </div>
-
-
-            <button id="logoutButton" class="btn-cerrar-sesion">Cerrar Sesión</button>
         </div>
     </div>
 

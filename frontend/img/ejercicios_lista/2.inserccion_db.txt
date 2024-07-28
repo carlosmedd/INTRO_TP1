@@ -119,9 +119,6 @@ INSERT INTO ejercicios (name, muscle, img1, img2)
 VALUES ('Prensa 45°', 'cuádriceps', 'prensa_45_grados_cuadriceps1.jpg', 'prensa_45_grados_cuadriceps2.jpg');
 
 INSERT INTO ejercicios (name, muscle, img1, img2) 
-VALUES ('Elevación de pelvis', 'isquiotibiales', 'elevacion_pelvis_isquiotibiales1.jpg', 'elevacion_pelvis_isquiotibiales2.jpg');
-
-INSERT INTO ejercicios (name, muscle, img1, img2) 
 VALUES ('Curl nórdico', 'isquiotibiales', 'curl_nordico_isquiotibiales1.jpg', 'curl_nordico_isquiotibiales2.jpg');
 
 INSERT INTO ejercicios (name, muscle, img1, img2) 

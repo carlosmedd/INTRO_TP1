@@ -438,6 +438,7 @@ def get_rutine_id (id):
         user = User.query.filter_by(id = rutina.user_id).first()
         rutina_data = {
             "id": rutina.id,
+            "user_id": rutina.user_id,
             "description": rutina.description, 
             "name_rutine": rutina.name,
             "name": user.nickname,
@@ -570,6 +571,23 @@ def create_rutine():
     return jsonify({
             "success": True, 
             }), 201
+
+@app.route('/rutines', methods=['DELETE'])
+def delete_rutine():
+    data = request.json
+    id_rutine = data.get("id")
+    rutina = Rutine.query.filter_by(id=id_rutine).first()
+
+    ejercicios_rutina = Exercise_user.query.filter_by(rutine_id=id_rutine).all()
+    for ejercicio in ejercicios_rutina:
+        db.session.delete(ejercicio)
+        db.session.commit()
+
+    db.session.delete(rutina)
+    db.session.commit()
+    return jsonify({
+            "success": True, 
+            }), 201    
 
 @app.route('/user_exercises')
 def get_exercises_by_user():

@@ -154,10 +154,10 @@ function crearFilaEjercicio(numero, nombre, dia, id) {
     nuevaFila.innerHTML = `
         <th scope="row">${numero}</th>
         <td class="col-4">${nombre}</td>
-        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="peso" placeholder="30 (kg)" min="1" required></td>
-        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="series" placeholder="4" min="1" required></td>
-        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="repeticiones" placeholder="12" min="1" required></td>
-        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="descanso" placeholder="120 (seg)" min="1" required></td>
+        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="peso" placeholder="30 (kg)" min="1" required></td>
+        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="series" placeholder="4" min="1" required></td>
+        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="repeticiones" placeholder="12" min="1" required></td>
+        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="descanso" placeholder="120 (seg)" min="1" required></td>
     `;
     return nuevaFila;
 }

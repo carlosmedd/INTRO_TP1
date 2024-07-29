@@ -1,4 +1,26 @@
+const id_usuario = localStorage.getItem("id");
 let id_rutina = null;
+
+function eliminar_rutina(id){
+    if (window.confirm("¿Seguro quieres eliminar este comentario?")){
+        fetch('http://localhost:5000/rutines', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({id}),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                window.location.href = "../";
+            } else {
+                alert("El comentario no pudo ser eliminado");
+            }
+        })
+        .catch(error => console.error('El servidor fallo:', error));
+    }
+}
 
 function cargarDatosRutina (content) {
     console.log(content);
@@ -7,6 +29,21 @@ function cargarDatosRutina (content) {
     document.getElementById("rutina-titulo").append(content.name_rutine);
     document.getElementById("rutina-descripcion").append(content.description);
     document.getElementById("rutina-meta-data").append(`Creado por ${content.name} el ${formatearFecha(content.date)}`);
+
+    if(id_usuario == content.user_id){
+        const boton = document.getElementById("botones_interaccion");
+        const create_div = document.createElement("div");
+        const boton_eliminar = document.createElement("button");
+        
+        create_div.setAttribute("class", "mx-1");
+        boton_eliminar.setAttribute("onclick",`eliminar_rutina(${content.id})`);
+        boton_eliminar.setAttribute("class","btn btn-danger");
+        boton_eliminar.append("Eliminar rutina");
+
+        create_div.append(boton_eliminar);
+        boton.append(create_div);
+    }
+    
 
     const dias = ["lunes", "martes", "miercoles", "jueves", "viernes", "sabado", "domingo"];
 

@@ -328,8 +328,8 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Rutina creada existosamente. Puedes encontrarla en "Mi perfil" o en "Explorar"');
-                window.location.href = `http://127.0.0.1:8000/rutinas/explorar/buscar/?name=${nombreRutina}`;
+                alert('Rutina creada existosamente. Puedes encontrarla en "Mi perfil" o en "Explorar"')
+                window.location.href = `http://127.0.0.1:8000/rutinas/explorar/rutina/?id=${data.id_rutine}`;
             } else {
                 alert("error");
             }

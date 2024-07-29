@@ -2,7 +2,7 @@ const id_usuario = localStorage.getItem("id");
 let id_rutina = null;
 
 function eliminar_rutina(id){
-    if (window.confirm("¿Seguro quieres eliminar este comentario?")){
+    if (window.confirm("¿Seguro quieres eliminar esta rutina?")){
         fetch('http://localhost:5000/rutines', {
             method: 'DELETE',
             headers: {
@@ -15,7 +15,7 @@ function eliminar_rutina(id){
             if (data.success) {
                 window.location.href = "../";
             } else {
-                alert("El comentario no pudo ser eliminado");
+                alert("La rutina no pudo ser eliminada");
             }
         })
         .catch(error => console.error('El servidor fallo:', error));

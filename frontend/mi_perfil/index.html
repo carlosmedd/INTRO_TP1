@@ -52,7 +52,7 @@
         <div class="container-info">
             <h3><u>MI INFORMACION</u></h3>
             <div class="nombre">
-                <label for="nombreCompleto">Nombre o Apodo</label>
+                <label for="nombreCompleto">Nombre completo</label>
                 <div class="nombreCompleto-input">
                     <p id="nombre_completo"></p>
                 </div>                
@@ -188,89 +188,164 @@
             
                 // TABLAS USUARIO
             const dayNames = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
-            fetch(`http://localhost:5000/rutinesUser?user_id=${id}`)
+            fetch(`http://localhost:5000/rutinesUser/${id}`)
             .then(response => response.json())
             .then(content => {
                 const container = document.getElementById("listar_rutinas");
-                const noRutinas = document.getElementById("noRutinas");
-                let tabla = ``;
-                if (content.length === 0) {
-                    noRutinas.classList.remove('d-none');
-                } else {
-                    noRutinas.classList.add('d-none');
-                    for (let index = 0; index < content.length; index++){
-                    let inicio = `
-                    <hr class="border border-black border-2" >
-                    <div class="row text-center">
-                        <div class="col-1">
-                        </div>
-                        <div class="col">
-                            <a class="h5" href="http://127.0.0.1:8000/rutinas/explorar/rutina?id=${content[index].id}">${content[index].name_rutine}</a>
-                        </div>
-                        <div class="col-1">
-                        </div>
+            tabla = ``;
+            for (let index = 0; index < content.length; index++){
+                
+                inicio = `
+                <hr class="border border-black border-2" >
+                <div class="row text-center">
+                    <div class="col-1">
                     </div>
-                    <div class="row ">
-                        <div class="col-1">
-                        </div>
-                        <div class="col">
-                            <p>Descripcion: ${content[index].description}</p>
-                        </div>
-                        <div class="col-2">
-                            <p>Creador: ${content[index].name}</p>
-                        </div>
-                        <div class="col-2">
-                            <p>Fecha: ${content[index].date}</p>
-                        </div>
+                    <div class="col">
+                        <a class="h5" href="http://127.0.0.1:8000/rutinas/explorar/rutina?id=${content[index].id}">${content[index].name_rutine}</a>
                     </div>
-                    <div class="row text-center">
-                        <div class="col ">
-                            <table class="table align-middle table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">Lunes</th>
-                                        <th scope="col">Martes</th>
-                                        <th scope="col">Miercoles</th>
-                                        <th scope="col">Jueves</th>
-                                        <th scope="col">Viernes</th>
-                                        <th scope="col">Sabado</th>
-                                        <th scope="col">Domingo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row" >Ejercicios</th>`
-                    for (let i = 0; i < dayNames.length; i++){
-                        let dia = `<td>`
-                        if (dayNames[i] === "Lunes"){
-                            if (content[index].Lunes.length !== 0){
-                                for (let j = 0; j < content[index].Lunes.length; j++){
-                                    let ejercicios = `<p>${content[index].Lunes[j].exercise}</p>`   
-                                    dia += ejercicios;
-                                }
-                            } else {
-                                let ejercicios = `<p>Descanso</p>`
-                                dia += ejercicios;
+                    <div class="col-1">
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-1">
+                    </div>
+                    <div class="col">
+                        <p>Descripcion: ${content[index].description}</p>
+                    </div>
+                    <div class="col-2">
+                        <p>Creador: ${content[index].name}</p>
+                    </div>
+                    <div class="col-2">
+                        <p>Fecha: ${content[index].date}</p>
+                    </div>
+                </div>
+                <div class="row text-center">
+                    <div class="col ">
+                        <table class="table align-middle table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Lunes</th>
+                                    <th scope="col">Martes</th>
+                                    <th scope="col">Miercoles</th>
+                                    <th scope="col">Jueves</th>
+                                    <th scope="col">Viernes</th>
+                                    <th scope="col">Sabado</th>
+                                    <th scope="col">Domingo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row" >Ejercicios</th>`
+                for (let i=0; i < dayNames.length; i++){
+                    dia = `
+                                        <td>`
+                    if (dayNames[i] == "Lunes"){
+                        if (content[index].Lunes.length != 0){
+                            for(let j=0; j<content[index].Lunes.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Lunes[j].exercise}</p>`   
+                                dia = dia + ejercicios
                             }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
                         }
-                            // Repetir para los demás días...
-                            //...
-                        dia += `</td>`;
-                        inicio += dia;
                     }
-                    let final = `
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    `;
-                    inicio += final;
-                    tabla += inicio;
+                    if (dayNames[i] == "Martes"){
+                        if (content[index].Martes.length != 0){
+                            for(let j=0; j<content[index].Martes.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Martes[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Miercoles"){
+                        if (content[index].Miercoles.length != 0){
+                            for(let j=0; j<content[index].Miercoles.length; j++){
+                                ejercicios = `              
+                                            <p>${content[index].Miercoles[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Jueves"){
+                        if (content[index].Jueves.length != 0){
+                            for(let j=0; j<content[index].Jueves.length; j++){
+                                ejercicios = `                        <p>${content[index].Jueves[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Viernes"){
+                        if (content[index].Viernes.length != 0){
+                            for(let j=0; j<content[index].Viernes.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Viernes[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Sabado"){
+                        if (content[index].Sabado.length != 0){
+                            for(let j=0; j<content[index].Sabado.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Sabado[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    if (dayNames[i] == "Domingo"){
+                        if (content[index].Domingo.length != 0){
+                            for(let j=0; j<content[index].Domingo.length; j++){
+                                ejercicios = `
+                                            <p>${content[index].Domingo[j].exercise}</p>`   
+                                dia = dia + ejercicios
+                            }
+                        }else{
+                            ejercicios = `
+                                            <p>Descanso</p>`
+                            dia = dia + ejercicios
+                        }
+                    }
+                    cierre_dia = `
+                                        </td>`
+                    dia = dia + cierre_dia
+                    inicio = inicio + dia
                 }
-                container.innerHTML = tabla;
+                final = `
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                `
+                inicio = inicio + final
+                tabla = tabla + inicio
             }
+            container.innerHTML = tabla
             })
         
                 .catch(error => console.error('El servidor fallo:', error));
@@ -324,6 +399,7 @@
                 localStorage.removeItem('nickname');
                 localStorage.removeItem('username');
                 localStorage.removeItem('password');
+                localStorage.removeItem('active_rutine_id');
                 window.location.href = 'http://127.0.0.1:8000/';
                 });
             });

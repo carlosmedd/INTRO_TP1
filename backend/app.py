@@ -205,7 +205,7 @@ def delete_response():
 @app.route('/rutines')
 def get_rutines():
     try:
-        rutinas = Rutine.query.all()
+        rutinas = Rutine.query.order_by(Rutine.created_at.desc()).all()
         rutinas_data = []
         for rutina in rutinas:
 
@@ -559,7 +559,6 @@ def create_rutine():
         if (dia[0] != -1):
             for ejercicio in dia:
                 id = ejercicio.get('id')
-                nombre = ejercicio.get('nombre')
                 peso = ejercicio.get('peso')
                 series = ejercicio.get('series')
                 repeticiones = ejercicio.get('repeticiones')
@@ -568,8 +567,10 @@ def create_rutine():
                 db.session.add(new_exercise_user)
                 db.session.commit()
         i = i + 1
+    
     return jsonify({
-            "success": True, 
+            "success": True,
+            "id_rutine": new_rutine.id, 
             }), 201
 
 @app.route('/rutines', methods=['DELETE'])
@@ -639,17 +640,10 @@ def update_user():
     else:
         return jsonify({"success": False, "message": "Usuario no encontrado"}), 404
 
-@app.route('/rutinesUser', methods=['GET'])
-def get_rutines_user():
+@app.route('/rutinesUser/<id>', methods=['GET'])
+def get_rutines_user(id):
     try:
-        # Obtener el ID del usuario de los parámetros de consulta
-        user_id = request.args.get('user_id')
-
-        if not user_id:
-            return jsonify({'message': 'ID de usuario requerido'}), 400
-
-        # Obtener las rutinas del usuario actual
-        rutinas = Rutine.query.filter_by(user_id=user_id).all()
+        rutinas = Rutine.query.filter_by(user_id=id).all()
         rutinas_data = []
         for rutina in rutinas:
 
@@ -718,6 +712,7 @@ def get_rutines_user():
     except Exception as error:
         print('Error', error)
         return jsonify({'message': 'Internal server error'}), 500
+    
     
 @app.route('/active_rutine', methods=['PUT'])
 def change_active_rutine_by_user():

@@ -154,10 +154,10 @@ function crearFilaEjercicio(numero, nombre, dia, id) {
     nuevaFila.innerHTML = `
         <th scope="row">${numero}</th>
         <td class="col-4">${nombre}</td>
-        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="peso" placeholder="30 (kg)" min="1" required></td>
-        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="series" placeholder="4" min="1" required></td>
-        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="repeticiones" placeholder="12" min="1" required></td>
-        <td><input required type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="descanso" placeholder="120 (seg)" min="1" required></td>
+        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="peso" placeholder="30 (kg)" min="1"></td>
+        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="series" placeholder="4" min="1"></td>
+        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="repeticiones" placeholder="12" min="1"></td>
+        <td><input type="number" class="form-control form-control-sm text-center align-center" data-id="${id}" data-dia="${dia}" data-tipo="descanso" placeholder="120 (seg)" min="1"></td>
     `;
     return nuevaFila;
 }
@@ -285,17 +285,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 const valor = input.value;
                 const ejercicio = listaEjercicios[dia].find(ej => ej.id === input.getAttribute('data-id'))
 
-                if (tipo == "peso") 
-                    ejercicio.peso = valor;
-
-                else if (tipo == "series")
-                    ejercicio.series = valor;
-
-                else if (tipo == "repeticiones")
-                    ejercicio.repeticiones = valor;
-
-                else if (tipo == "descanso")
-                    ejercicio.descanso = valor;
+                if (tipo == "peso"){
+                    if (valor == ""){
+                        ejercicio.peso = 30;
+                    }else{
+                        ejercicio.peso = valor;
+                    }
+                }else if (tipo == "series"){
+                    if (valor == ""){
+                        ejercicio.series = 4;
+                    }else{
+                        ejercicio.series = valor;
+                    }
+                }else if (tipo == "repeticiones"){
+                    if (valor == ""){
+                        ejercicio.repeticiones = 12;
+                    }else{
+                        ejercicio.repeticiones = valor;
+                    }
+                }else if (tipo == "descanso"){
+                    if (valor == ""){
+                        ejercicio.descanso = 120;
+                    }else{
+                        ejercicio.descanso = valor;
+                    }
+                }
             })
 
             // aquellas tablas sin ejercicio se los considera como dia de descanso (valor -1)

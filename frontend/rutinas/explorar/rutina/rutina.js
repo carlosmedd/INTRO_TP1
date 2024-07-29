@@ -13,6 +13,7 @@ function eliminar_rutina(id){
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                localStorage.removeItem('active_rutine_id');
                 window.location.href = "../";
             } else {
                 alert("La rutina no pudo ser eliminada");

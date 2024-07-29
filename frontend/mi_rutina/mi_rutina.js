@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const mensajeNoRutina = document.getElementById("no-rutina");
     const containerRutina = document.getElementById("container-rutina");
 
-    if (rutinaActiva == "null") {
+    if (rutinaActiva == "null" || rutinaActiva === undefined) {
         mensajeNoRutina.removeAttribute("hidden");
     } else {
         containerRutina.removeAttribute("hidden");

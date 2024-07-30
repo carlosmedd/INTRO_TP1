@@ -6,7 +6,7 @@ from models import db, User, Exercise, Comment, Response, Rutine, Exercise_user
 app = Flask(__name__)
 CORS(app)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://gabriel:140703@localhost:5432/users_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://user:password@localhost:5432/name_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
  
 @app.route('/login', methods=['POST'])
